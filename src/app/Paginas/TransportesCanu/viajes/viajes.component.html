@@ -3,13 +3,11 @@
 <div class="container-fluid mt-3 px-1">
 
     <!-- Listado -->
-    <!-- Listado -->
     <div *ngIf="!modoCreacion && !modoEdicion" class="card shadow-sm w-100"
         style="max-width: 99%; border-radius: 12px;">
 
         <!-- HEADER -->
-<div class="card-header text-white position-relative py-3"
-     style="background-color: #000000; 
+        <div class="card-header text-white position-relative py-3" style="background-color: #000000; 
             border-radius: 12px; 
             box-shadow: 0 4px 6px rgba(0,0,0,0.25);">
             <div class="d-flex justify-content-center align-items-center gap-2">
@@ -57,7 +55,7 @@
                     <thead>
                         <tr>
                             <!-- Fecha: ordenable -->
-                            <th class="fs-6 fs-sm-8 th-ordenable" style="min-width: 70px; width: 70px;"
+                            <th class="fs-6 fs-sm-8 th-ordenable" style="min-width: 20px; width: 100px;"
                                 (click)="OrdenarPor('FechaViaje')">
                                 Fecha
                                 <i *ngIf="ColumnaOrden === 'FechaViaje'" class="bi"
@@ -70,7 +68,7 @@
                             </th>
 
                             <!-- Monto: ordenable -->
-                            <th class="fs-6 fs-sm-8 th-ordenable" style="min-width: 70px; width: 70px;"
+                            <th class="fs-6 fs-sm-8 th-ordenable" style="min-width: 80px; width: 10px;"
                                 (click)="OrdenarPor('PrecioViaje')">
                                 Monto
                                 <i *ngIf="ColumnaOrden === 'PrecioViaje'" class="bi"
@@ -93,16 +91,16 @@
 
                             <td colspan="4" class="p-0">
                                 <div class="fila-contenido fs-12 fs-sm-8">
-                                    <div class="celda text-truncate" style="width:70px;">
+                                    <div class="celda text-truncate" style="width:10px;">
                                         {{ v.FechaViaje | date:'dd/MM/yyyy' }}
                                     </div>
 
                                     <div class="celda text-truncate"
-                                        style="width:100px; word-break: break-word; overflow-wrap: break-word;">
+                                        style="width:10px; word-break: break-word; overflow-wrap: break-word;">
                                         {{ v.Cliente }}
                                     </div>
 
-                                    <div class="celda text-truncate" style="width:70px;">
+                                    <div class="celda text-truncate" style="width:10px;">
                                         Q {{ v.PrecioViaje | number:'1.2-2' }}
                                     </div>
 

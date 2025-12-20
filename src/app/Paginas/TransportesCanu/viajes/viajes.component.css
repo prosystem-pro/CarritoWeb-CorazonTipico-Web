@@ -101,7 +101,15 @@
   .tabla-limpiada .celda,
   .fila-contenido,
   .badge {
-    font-size: 0.53rem !important; /* más pequeño solo en este rango */
+    font-size: 0.5rem !important; /* más pequeño solo en este rango */
+  }
+}
+@media (max-width: 399px)  {
+  .tabla-limpiada th,
+  .tabla-limpiada .celda,
+  .fila-contenido,
+  .badge {
+    font-size: 0.3rem !important; /* más pequeño solo en este rango */
   }
 }
 
