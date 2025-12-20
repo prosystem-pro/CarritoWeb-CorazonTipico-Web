@@ -1,0 +1,273 @@
+<app-nabar-sidebar></app-nabar-sidebar>
+
+<div class="container-fluid mt-3 px-1">
+
+    <!-- Listado -->
+    <!-- Listado -->
+    <div *ngIf="!modoCreacion && !modoEdicion" class="card shadow-sm w-100"
+        style="max-width: 99%; border-radius: 12px;">
+
+        <!-- HEADER -->
+        <div class="card-header bg-dark text-white position-relative py-3"
+            style="border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.25);">
+            <div class="d-flex justify-content-center align-items-center gap-2">
+                <i class="bi bi-truck fs-3 fs-sm-4 text-white"></i>
+                <h5 class="mb-0 fw-semibold fs-5 fs-sm-6">Historial de viajes</h5>
+            </div>
+
+            <button type="button" class="position-absolute top-50 end-0 translate-middle-y me-3 p-2"
+                style="background-color: white; border: none; border-radius: 8px;" (click)="RegresarInicio()">
+                <div class="rounded-circle d-flex align-items-center justify-content-center"
+                    style="width: 28px; height: 28px; background-color: white; border: 2px solid black;">
+                    ✕
+                </div>
+            </button>
+        </div>
+
+        <!-- BODY -->
+        <div class="card-body py-2 px-2 px-md-3">
+            <!-- FILA 1: BOTÓN NUEVO Y FILTROS -->
+            <div class="row mb-3">
+                <div class="col-12 col-md-auto d-flex justify-content-center justify-content-md-start mb-2 mb-md-0">
+                    <button class="btn btn-success w-100 fs-6 fs-sm-7" style="max-width: 140px;"
+                        (click)="MostrarFormularioCreacion()">
+                        <i class="bi bi-plus-square-fill me-1 fs-6 fs-sm-7"></i> Nuevo
+                    </button>
+                </div>
+
+                <div class="col-12 col-md d-flex gap-2 justify-content-start flex-wrap">
+                    <select class="form-select form-select-sm" [(ngModel)]="filtroAnio" (change)="Filtrar()"
+                        style="max-width: 140px;">
+                        <option value="">Año</option>
+                        <option *ngFor="let a of anios" [value]="a">{{ a }}</option>
+                    </select>
+
+                    <select class="form-select form-select-sm" [(ngModel)]="filtroMes" (change)="Filtrar()"
+                        style="max-width: 140px;">
+                        <option value="">Mes</option>
+                        <option *ngFor="let m of meses" [value]="m.value">{{ m.name }}</option>
+                    </select>
+                </div>
+            </div>
+            <!-- TABLA -->
+<div class="table-responsive">
+  <table class="table mb-0 tabla-limpiada table-fixed table-sm">
+    <thead>
+      <tr>
+        <!-- Fecha: ordenable -->
+        <th class="fs-6 fs-sm-8 th-ordenable" 
+            style="min-width: 70px; width: 70px;" 
+            (click)="OrdenarPor('FechaViaje')">
+          Fecha
+          <i *ngIf="ColumnaOrden === 'FechaViaje'" 
+             class="bi" 
+             [ngClass]="OrdenAscendente ? 'bi-caret-up-fill' : 'bi-caret-down-fill'"></i>
+        </th>
+
+        <!-- Nombre: no ordenable -->
+        <th class="fs-6 fs-sm-8" style="min-width: 100px; width: 100px;">
+          Nombre
+        </th>
+
+        <!-- Monto: ordenable -->
+        <th class="fs-6 fs-sm-8 th-ordenable" 
+            style="min-width: 70px; width: 70px;" 
+            (click)="OrdenarPor('PrecioViaje')">
+          Monto
+          <i *ngIf="ColumnaOrden === 'PrecioViaje'" 
+             class="bi" 
+             [ngClass]="OrdenAscendente ? 'bi-caret-up-fill' : 'bi-caret-down-fill'"></i>
+        </th>
+
+        <!-- Estatus: no ordenable -->
+        <th class="fs-6 fs-sm-8" style="min-width: 90px; width: 90px;">
+          Estatus
+        </th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr *ngFor="let v of viajesFiltrados" class="fila-deslizable" [attr.data-id]="v.CodigoViaje"
+          (dblclick)="Editar(v)" 
+          (mousedown)="IniciarArrastre($event, v)"
+          (mousemove)="DuranteArrastre($event)" 
+          (mouseup)="FinalizarArrastre()"
+          (mouseleave)="FinalizarArrastre()" 
+          (touchstart)="IniciarArrastre($event, v)"
+          (touchmove)="DuranteArrastre($event)" 
+          (touchend)="FinalizarArrastre()">
+
+        <td colspan="4" class="p-0">
+          <div class="fila-contenido fs-12 fs-sm-8">
+            <div class="celda text-truncate" style="width:70px;">
+              {{ v.FechaViaje | date:'dd/MM/yyyy' }}
+            </div>
+
+            <div class="celda text-truncate" style="width:100px; word-break: break-word; overflow-wrap: break-word;">
+              {{ v.Cliente }}
+            </div>
+
+            <div class="celda text-truncate" style="width:70px;">
+              Q {{ v.PrecioViaje | number:'1.2-2' }}
+            </div>
+
+            <div class="celda text-truncate" style="width:90px;">
+              <span class="badge estado-cancelado" *ngIf="v.Estado===1">
+                <i class="bi bi-check-circle-fill me-1"></i> Cancelado
+              </span>
+              <span class="badge estado-agendado" *ngIf="v.Estado===2">
+                <i class="bi bi-calendar-check-fill me-1"></i> Agendado
+              </span>
+              <span class="badge estado-pendiente" *ngIf="v.Estado===3">
+                <i class="bi bi-exclamation-circle-fill me-1"></i> Pendiente
+              </span>
+            </div>
+          </div>
+        </td>
+
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+        </div>
+    </div>
+
+    <!-- FORMULARIO crear-->
+    <div *ngIf="modoCreacion || modoEdicion" class="container-fluid mt-3 px-1">
+        <div class="card shadow-sm w-100" style="max-width: 99%; border-radius: 12px;">
+
+            <!-- HEADER DEL CARD -->
+            <div class="card-header bg-dark text-white position-relative py-3" style="border-top-left-radius: 12px; border-top-right-radius: 12px; 
+                border-bottom-left-radius: 12px; border-bottom-right-radius: 12px;
+                box-shadow: 0 4px 6px rgba(0,0,0,0.25);">
+                <div class="d-flex justify-content-center align-items-center gap-2">
+                    <i class="bi bi-truck fs-3 text-white"></i>
+                    <h5 class="mb-0 fw-semibold">Datos del viaje</h5>
+                </div>
+
+                <!-- BOTÓN CERRAR -->
+                <button type="button" class="position-absolute top-50 end-0 translate-middle-y me-3 p-2"
+                    style="background-color: white; border: none; border-radius: 8px;" (click)="CancelarFormulario()">
+                    <div class="rounded-circle d-flex align-items-center justify-content-center"
+                        style="width: 28px; height: 28px; background-color: white; border: 2px solid black;">
+                        <span style="color: black; font-weight: bold; font-size: 0.9rem;">✕</span>
+                    </div>
+                </button>
+            </div>
+
+            <!-- BODY -->
+            <div class="card-body py-3 px-3">
+
+                <div class="row g-3">
+
+                    <!-- FILA 1 -->
+                    <div class="col-12 col-md-4 px-md-2">
+                        <label class="form-label fw-bold">
+                            <i class="bi bi-calendar2-event fs-4 text-primary me-1"></i> Fecha del viaje
+                        </label>
+                        <input type="date" class="form-control" [(ngModel)]="viajeFormulario.FechaViaje">
+                    </div>
+
+                    <div class="col-12 col-md-4 px-md-2">
+                        <label class="form-label fw-bold">
+                            <i class="bi bi-person-fill fs-4 text-black me-1"></i> Cliente
+                        </label>
+                        <input class="form-control" placeholder="Nombre del cliente"
+                            [(ngModel)]="viajeFormulario.Cliente">
+                    </div>
+
+                    <div class="col-12 col-md-4 px-md-2">
+                        <label class="form-label fw-bold">
+                            <i class="bi bi-cash-stack fs-4 text-success me-1"></i> Precio del viaje
+                        </label>
+                        <input type="number" class="form-control" [(ngModel)]="viajeFormulario.PrecioViaje">
+                    </div>
+
+                    <!-- FILA 2 -->
+                    <div class="col-12 col-md-4 px-md-2">
+                        <label class="form-label fw-bold">
+                            <i class="bi bi-cash-stack fs-4 text-danger me-1"></i> Pago al chofer
+                        </label>
+                        <input type="number" class="form-control" [(ngModel)]="viajeFormulario.PagoChofer">
+                    </div>
+
+                    <div class="col-12 col-md-4 px-md-2">
+                        <label class="form-label fw-bold">
+                            <i class="bi bi-cash-stack fs-4 text-danger me-1"></i> Pago combustible
+                        </label>
+                        <input type="number" class="form-control" [(ngModel)]="viajeFormulario.PagoCombustible">
+                    </div>
+
+                    <div class="col-12 col-md-4 px-md-2">
+                        <label class="form-label fw-bold">
+                            <i class="bi bi-cash-stack fs-4 text-danger me-1"></i> Imprevistos
+                        </label>
+                        <input type="number" class="form-control" [(ngModel)]="viajeFormulario.Imprevistos">
+                    </div>
+
+                    <!-- FILA 3 -->
+                    <div class="col-12 col-md-6 px-md-2">
+                        <label class="form-label fw-bold">
+                            <i class="bi bi-exclamation-square fs-4 text-warning me-1"></i> Estatus
+                        </label>
+                        <select class="form-select" [(ngModel)]="viajeFormulario.Estado">
+                            <option [value]="1">Cancelado</option>
+                            <option [value]="2">Agendado</option>
+                            <option [value]="3">Pendiente</option>
+                        </select>
+                    </div>
+
+                    <div class="col-12 col-md-6 px-md-2">
+                        <label class="form-label fw-bold">
+                            <i class="bi bi-pencil-square fs-4 text-secondary me-1"></i> Descripción del viaje
+                        </label>
+                        <textarea class="form-control" rows="1" style="resize: none;"
+                            placeholder="Descripción del viaje" [(ngModel)]="viajeFormulario.DescripcionViaje">
+          </textarea>
+                    </div>
+
+                </div>
+
+                <!-- BOTÓN GUARDAR CENTRADO -->
+                <div class="text-center mt-3">
+                    <button class="btn btn-success btn-lg" (click)="modoCreacion ? Crear() : GuardarEdicion()">
+                        <i class="bi bi-cloud-arrow-down text-white me-1 fs-5"></i> Guardar
+                    </button>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+<!-- MODAL DE CONFIRMACIÓN ELIMINAR -->
+<div *ngIf="mensajeEliminarVisible" class="modal-backdrop fade show"></div>
+<div *ngIf="mensajeEliminarVisible" class="position-fixed top-50 start-50 translate-middle" 
+     style="z-index: 2000; min-width: 320px; max-width: 90%;">
+  <div class="card shadow rounded-3 border-0">
+    
+    <!-- Header -->
+    <div class="card-header bg-warning text-dark fw-bold d-flex justify-content-between align-items-center">
+      Confirmar Eliminación
+      <button type="button" class="btn-close btn-sm" aria-label="Close" (click)="CancelarEliminar()"></button>
+    </div>
+
+    <!-- Body -->
+    <div class="card-body text-center">
+      <p class="mb-3 fs-6">{{ mensajeEliminarTexto }}</p>
+      <div class="d-flex justify-content-center gap-2">
+        <button type="button" class="btn btn-danger btn-sm d-flex align-items-center gap-1" (click)="ConfirmarEliminar()">
+          <i class="bi bi-trash"></i> Eliminar
+        </button>
+        <button type="button" class="btn btn-secondary btn-sm" (click)="CancelarEliminar()">
+          Cancelar
+        </button>
+      </div>
+    </div>
+    
+  </div>
+</div>
+
+
+
+</div>

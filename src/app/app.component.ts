@@ -127,6 +127,9 @@ export class AppComponent implements OnInit {
 
   @HostListener('window:beforeunload', ['$event'])
   @HostListener('window:pagehide', ['$event'])
+  onSalir(event: Event): void {
+    // lógica antes de salir
+  }
   registrarSalida(): void {
     clearInterval(this.intervaloActualizacion);
     if (this.codigoReporteTiempoPagina == null) return;
@@ -201,10 +204,23 @@ export class AppComponent implements OnInit {
   esReporteTiempoPagina(): boolean {
     return this.router.url === '/reporte-tiempo-pagina';
   }
+  esViajes(): boolean {
+    return this.router.url === '/viajes';
+  }
+  esInicioTC(): boolean {
+    return this.router.url === '/iniciotc';
+  }
+  esMantenimiento(): boolean {
+    return this.router.url === '/mantenimiento';
+  }
+
+  esLoginTC(): boolean {
+    return this.router.url === '/logintc';
+  }
 
   mostrarSidebar(): boolean {
     return !(
-      this.Permiso.TienePermiso('RedSocial','VerUnidad') &&
+      this.Permiso.TienePermiso('RedSocial', 'VerUnidad') &&
       this.router.url.startsWith('/reporte')
     );
   }

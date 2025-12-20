@@ -1,0 +1,5 @@
+/* Forzar cursor de mano en todos los enlaces clickeables */
+.nav-link,
+.list-group-item-action {
+  cursor: pointer !important;
+}

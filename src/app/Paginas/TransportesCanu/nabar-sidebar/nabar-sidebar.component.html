@@ -1,0 +1,50 @@
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <div class="container-fluid">
+    <!-- Logo -->
+    <a class="navbar-brand" routerLink="/inicio">
+      <img src="/LogoTransportesCanu1.jpeg" alt="Logo" height="30">
+    </a>
+
+    <!-- Hamburger button para móvil -->
+    <button class="navbar-toggler" type="button" (click)="sidebarVisible = !sidebarVisible">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <!-- Menú visible en PC -->
+<!-- Menú visible en PC -->
+<div class="collapse navbar-collapse d-none d-lg-flex justify-content-end">
+  <ul class="navbar-nav">
+    <li class="nav-item"><a class="nav-link text-white" (click)="navegar('iniciotc')">Inicio</a></li>
+    <li class="nav-item"><a class="nav-link text-white" (click)="navegar('viajes')">Viajes</a></li>
+    <li class="nav-item"><a class="nav-link text-white" (click)="navegar('mantenimiento')">Mantenimiento</a></li>
+    <li class="nav-item"><a class="nav-link text-white" (click)="navegar('reportes')">Reportes</a></li>
+    <li class="nav-item"><a class="nav-link text-white" (click)="CerrarSesion('salir')">Salir</a></li>
+  </ul>
+</div>
+  </div>
+</nav>
+
+
+
+
+
+<!-- Sidebar para móvil -->
+<div class="offcanvas offcanvas-start bg-dark" [class.show]="sidebarVisible" tabindex="-1">
+  <div class="offcanvas-header">
+    <h5 class="offcanvas-title">
+      <img src="/LogoTransportesCanu2.jpeg" alt="Logo" height="30">
+    </h5>
+    <button type="button" class="btn-close btn-close-white" (click)="sidebarVisible = false"></button>
+  </div>
+  <div class="offcanvas-body p-0">
+    <div class="list-group list-group-flush">
+      <a class="list-group-item list-group-item-action bg-dark text-white" (click)="navegar('iniciotc')">Inicio</a>
+      <a class="list-group-item list-group-item-action bg-dark text-white" (click)="navegar('viajes')">Viajes</a>
+      <a class="list-group-item list-group-item-action bg-dark text-white" (click)="navegar('mantenimiento')">Mantenimiento</a>
+      <a class="list-group-item list-group-item-action bg-dark text-white" (click)="navegar('reportes')">Reportes</a>
+      <a class="list-group-item list-group-item-action bg-dark text-white" (click)="navegar('salir')">Salir</a>
+    </div>
+  </div>
+</div>
+

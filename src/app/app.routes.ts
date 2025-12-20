@@ -15,6 +15,13 @@ import { PagoComponent } from './Paginas/Inicio/pago/pago.component';
 import { LoginGuard } from './Servicios/loginGuard';
 import { SpinnerGlobalComponent } from './Componentes/spinner-global/spinner-global.component';
 
+//TRANSPORTES CANU
+import { ViajesComponent } from './Paginas/TransportesCanu/viajes/viajes.component';
+import { NabarSidebarComponent } from './Paginas/TransportesCanu/nabar-sidebar/nabar-sidebar.component';
+import { InicioTCComponent } from './Paginas/TransportesCanu/inicio-tc/inicio-tc.component';
+import { MantenimientoComponent } from './Paginas/TransportesCanu/mantenimiento/mantenimiento.component';
+import { LoginTCComponent } from './Paginas/TransportesCanu/login-tc/login-tc.component';
+
 export const routes: Routes = [
   { path: '', redirectTo: '/nosotros', pathMatch: 'full' },
   { path: 'login', component: LoginComponent, canActivate: [LoginGuard] },
@@ -35,6 +42,13 @@ export const routes: Routes = [
   { path: 'reporte-red-social', component: ReporteRedSocialComponent, canActivate: [AutorizacionRuta] },
   { path: 'reporte-tiempo-pagina', component: ReporteTiempoPaginaComponent, canActivate: [AutorizacionRuta] },
   { path: 'pago', component: PagoComponent, canActivate: [AutorizacionRuta] },
+  //Transportes Canu
+  { path: 'navbarsidebar', component: NabarSidebarComponent,canActivate: [AutorizacionRuta] },
+  { path: 'viajes', component: ViajesComponent,canActivate: [AutorizacionRuta] },
+  { path: 'iniciotc', component: InicioTCComponent,canActivate: [AutorizacionRuta] },
+  { path: 'mantenimiento', component: MantenimientoComponent, canActivate: [AutorizacionRuta]},
+   { path: 'logintc', component: LoginTCComponent },
+
 
   { path: '**', redirectTo: 'nosotros' },
 ];
