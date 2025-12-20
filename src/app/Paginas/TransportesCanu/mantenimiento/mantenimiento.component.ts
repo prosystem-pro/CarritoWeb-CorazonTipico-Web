@@ -102,6 +102,7 @@ export class MantenimientoComponent implements OnInit {
   Filtrar() {
     this.mantenimientosFiltrados = this.mantenimientos.filter(m => {
       const f = new Date(m.FechaMantenimiento);
+      console.log('mantenimientos filtra', this.mantenimientosFiltrados)
       return (!this.filtroAnio || f.getFullYear().toString() === this.filtroAnio) &&
         (!this.filtroMes || (f.getMonth() + 1).toString().padStart(2, '0') === this.filtroMes);
     });
@@ -255,4 +256,10 @@ export class MantenimientoComponent implements OnInit {
       return this.OrdenAscendente ? A - B : B - A;
     });
   }
+  
+  // Devuelve la suma de ManoObra, CostoRespuestos e Imprevistos para un mantenimiento
+CalcularMonto(m: any): number {
+  return (m.ManoObra || 0) + (m.CostoRepuestos || 0) + (m.Imprevistos || 0);
+}
+
 }

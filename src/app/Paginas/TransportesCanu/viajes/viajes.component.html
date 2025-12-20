@@ -50,85 +50,78 @@
                 </div>
             </div>
             <!-- TABLA -->
-<div class="table-responsive">
-  <table class="table mb-0 tabla-limpiada table-fixed table-sm">
-    <thead>
-      <tr>
-        <!-- Fecha: ordenable -->
-        <th class="fs-6 fs-sm-8 th-ordenable" 
-            style="min-width: 70px; width: 70px;" 
-            (click)="OrdenarPor('FechaViaje')">
-          Fecha
-          <i *ngIf="ColumnaOrden === 'FechaViaje'" 
-             class="bi" 
-             [ngClass]="OrdenAscendente ? 'bi-caret-up-fill' : 'bi-caret-down-fill'"></i>
-        </th>
+            <div class="table-responsive">
+                <table class="table mb-0 tabla-limpiada table-fixed table-sm">
+                    <thead>
+                        <tr>
+                            <!-- Fecha: ordenable -->
+                            <th class="fs-6 fs-sm-8 th-ordenable" style="min-width: 70px; width: 70px;"
+                                (click)="OrdenarPor('FechaViaje')">
+                                Fecha
+                                <i *ngIf="ColumnaOrden === 'FechaViaje'" class="bi"
+                                    [ngClass]="OrdenAscendente ? 'bi-caret-up-fill' : 'bi-caret-down-fill'"></i>
+                            </th>
 
-        <!-- Nombre: no ordenable -->
-        <th class="fs-6 fs-sm-8" style="min-width: 100px; width: 100px;">
-          Nombre
-        </th>
+                            <!-- Nombre: no ordenable -->
+                            <th class="fs-6 fs-sm-8" style="min-width: 100px; width: 100px;">
+                                Nombre
+                            </th>
 
-        <!-- Monto: ordenable -->
-        <th class="fs-6 fs-sm-8 th-ordenable" 
-            style="min-width: 70px; width: 70px;" 
-            (click)="OrdenarPor('PrecioViaje')">
-          Monto
-          <i *ngIf="ColumnaOrden === 'PrecioViaje'" 
-             class="bi" 
-             [ngClass]="OrdenAscendente ? 'bi-caret-up-fill' : 'bi-caret-down-fill'"></i>
-        </th>
+                            <!-- Monto: ordenable -->
+                            <th class="fs-6 fs-sm-8 th-ordenable" style="min-width: 70px; width: 70px;"
+                                (click)="OrdenarPor('PrecioViaje')">
+                                Monto
+                                <i *ngIf="ColumnaOrden === 'PrecioViaje'" class="bi"
+                                    [ngClass]="OrdenAscendente ? 'bi-caret-up-fill' : 'bi-caret-down-fill'"></i>
+                            </th>
 
-        <!-- Estatus: no ordenable -->
-        <th class="fs-6 fs-sm-8" style="min-width: 90px; width: 90px;">
-          Estatus
-        </th>
-      </tr>
-    </thead>
+                            <!-- Estatus: no ordenable -->
+                            <th class="fs-6 fs-sm-8" style="min-width: 90px; width: 90px;">
+                                Estatus
+                            </th>
+                        </tr>
+                    </thead>
 
-    <tbody>
-      <tr *ngFor="let v of viajesFiltrados" class="fila-deslizable" [attr.data-id]="v.CodigoViaje"
-          (dblclick)="Editar(v)" 
-          (mousedown)="IniciarArrastre($event, v)"
-          (mousemove)="DuranteArrastre($event)" 
-          (mouseup)="FinalizarArrastre()"
-          (mouseleave)="FinalizarArrastre()" 
-          (touchstart)="IniciarArrastre($event, v)"
-          (touchmove)="DuranteArrastre($event)" 
-          (touchend)="FinalizarArrastre()">
+                    <tbody>
+                        <tr *ngFor="let v of viajesFiltrados" class="fila-deslizable" [attr.data-id]="v.CodigoViaje"
+                            (dblclick)="Editar(v)" (mousedown)="IniciarArrastre($event, v)"
+                            (mousemove)="DuranteArrastre($event)" (mouseup)="FinalizarArrastre()"
+                            (mouseleave)="FinalizarArrastre()" (touchstart)="IniciarArrastre($event, v)"
+                            (touchmove)="DuranteArrastre($event)" (touchend)="FinalizarArrastre()">
 
-        <td colspan="4" class="p-0">
-          <div class="fila-contenido fs-12 fs-sm-8">
-            <div class="celda text-truncate" style="width:70px;">
-              {{ v.FechaViaje | date:'dd/MM/yyyy' }}
+                            <td colspan="4" class="p-0">
+                                <div class="fila-contenido fs-12 fs-sm-8">
+                                    <div class="celda text-truncate" style="width:70px;">
+                                        {{ v.FechaViaje | date:'dd/MM/yyyy' }}
+                                    </div>
+
+                                    <div class="celda text-truncate"
+                                        style="width:100px; word-break: break-word; overflow-wrap: break-word;">
+                                        {{ v.Cliente }}
+                                    </div>
+
+                                    <div class="celda text-truncate" style="width:70px;">
+                                        Q {{ v.PrecioViaje | number:'1.2-2' }}
+                                    </div>
+
+                                    <div class="celda text-truncate" style="width:90px;">
+                                        <span class="badge estado-cancelado" *ngIf="v.Estado===1">
+                                            <i class="bi bi-check-circle-fill me-1"></i> Cancelado
+                                        </span>
+                                        <span class="badge estado-agendado" *ngIf="v.Estado===2">
+                                            <i class="bi bi-calendar-check-fill me-1"></i> Agendado
+                                        </span>
+                                        <span class="badge estado-pendiente" *ngIf="v.Estado===3">
+                                            <i class="bi bi-exclamation-circle-fill me-1"></i> Pendiente
+                                        </span>
+                                    </div>
+                                </div>
+                            </td>
+
+                        </tr>
+                    </tbody>
+                </table>
             </div>
-
-            <div class="celda text-truncate" style="width:100px; word-break: break-word; overflow-wrap: break-word;">
-              {{ v.Cliente }}
-            </div>
-
-            <div class="celda text-truncate" style="width:70px;">
-              Q {{ v.PrecioViaje | number:'1.2-2' }}
-            </div>
-
-            <div class="celda text-truncate" style="width:90px;">
-              <span class="badge estado-cancelado" *ngIf="v.Estado===1">
-                <i class="bi bi-check-circle-fill me-1"></i> Cancelado
-              </span>
-              <span class="badge estado-agendado" *ngIf="v.Estado===2">
-                <i class="bi bi-calendar-check-fill me-1"></i> Agendado
-              </span>
-              <span class="badge estado-pendiente" *ngIf="v.Estado===3">
-                <i class="bi bi-exclamation-circle-fill me-1"></i> Pendiente
-              </span>
-            </div>
-          </div>
-        </td>
-
-      </tr>
-    </tbody>
-  </table>
-</div>
 
         </div>
     </div>
@@ -240,33 +233,34 @@
 
         </div>
     </div>
-<!-- MODAL DE CONFIRMACIÓN ELIMINAR -->
-<div *ngIf="mensajeEliminarVisible" class="modal-backdrop fade show"></div>
-<div *ngIf="mensajeEliminarVisible" class="position-fixed top-50 start-50 translate-middle" 
-     style="z-index: 2000; min-width: 320px; max-width: 90%;">
-  <div class="card shadow rounded-3 border-0">
-    
-    <!-- Header -->
-    <div class="card-header bg-warning text-dark fw-bold d-flex justify-content-between align-items-center">
-      Confirmar Eliminación
-      <button type="button" class="btn-close btn-sm" aria-label="Close" (click)="CancelarEliminar()"></button>
-    </div>
+    <!-- MODAL DE CONFIRMACIÓN ELIMINAR -->
+    <div *ngIf="mensajeEliminarVisible" class="modal-backdrop fade show"></div>
+    <div *ngIf="mensajeEliminarVisible" class="position-fixed top-50 start-50 translate-middle"
+        style="z-index: 2000; min-width: 320px; max-width: 90%;">
+        <div class="card shadow rounded-3 border-0">
 
-    <!-- Body -->
-    <div class="card-body text-center">
-      <p class="mb-3 fs-6">{{ mensajeEliminarTexto }}</p>
-      <div class="d-flex justify-content-center gap-2">
-        <button type="button" class="btn btn-danger btn-sm d-flex align-items-center gap-1" (click)="ConfirmarEliminar()">
-          <i class="bi bi-trash"></i> Eliminar
-        </button>
-        <button type="button" class="btn btn-secondary btn-sm" (click)="CancelarEliminar()">
-          Cancelar
-        </button>
-      </div>
+            <!-- Header -->
+            <div class="card-header bg-warning text-dark fw-bold d-flex justify-content-between align-items-center">
+                Confirmar Eliminación
+                <button type="button" class="btn-close btn-sm" aria-label="Close" (click)="CancelarEliminar()"></button>
+            </div>
+
+            <!-- Body -->
+            <div class="card-body text-center">
+                <p class="mb-3 fs-6">{{ mensajeEliminarTexto }}</p>
+                <div class="d-flex justify-content-center gap-2">
+                    <button type="button" class="btn btn-danger btn-sm d-flex align-items-center gap-1"
+                        (click)="ConfirmarEliminar()">
+                        <i class="bi bi-trash"></i> Eliminar
+                    </button>
+                    <button type="button" class="btn btn-secondary btn-sm" (click)="CancelarEliminar()">
+                        Cancelar
+                    </button>
+                </div>
+            </div>
+
+        </div>
     </div>
-    
-  </div>
-</div>
 
 
 

@@ -21,6 +21,7 @@ import { NabarSidebarComponent } from './Paginas/TransportesCanu/nabar-sidebar/n
 import { InicioTCComponent } from './Paginas/TransportesCanu/inicio-tc/inicio-tc.component';
 import { MantenimientoComponent } from './Paginas/TransportesCanu/mantenimiento/mantenimiento.component';
 import { LoginTCComponent } from './Paginas/TransportesCanu/login-tc/login-tc.component';
+import { ReportesComponent } from './Paginas/TransportesCanu/reportes/reportes.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/nosotros', pathMatch: 'full' },
@@ -43,11 +44,12 @@ export const routes: Routes = [
   { path: 'reporte-tiempo-pagina', component: ReporteTiempoPaginaComponent, canActivate: [AutorizacionRuta] },
   { path: 'pago', component: PagoComponent, canActivate: [AutorizacionRuta] },
   //Transportes Canu
-  { path: 'navbarsidebar', component: NabarSidebarComponent,canActivate: [AutorizacionRuta] },
-  { path: 'viajes', component: ViajesComponent,canActivate: [AutorizacionRuta] },
-  { path: 'iniciotc', component: InicioTCComponent,canActivate: [AutorizacionRuta] },
-  { path: 'mantenimiento', component: MantenimientoComponent, canActivate: [AutorizacionRuta]},
-   { path: 'logintc', component: LoginTCComponent },
+  { path: 'navbarsidebar', component: NabarSidebarComponent, canActivate: [AutorizacionRuta] },
+  { path: 'viajes', component: ViajesComponent, canActivate: [AutorizacionRuta] },
+  { path: 'iniciotc', component: InicioTCComponent, canActivate: [AutorizacionRuta] },
+  { path: 'mantenimiento', component: MantenimientoComponent, canActivate: [AutorizacionRuta] },
+  { path: 'reportes', component: ReportesComponent, canActivate: [AutorizacionRuta] },
+  { path: 'logintc', component: LoginTCComponent },
 
 
   { path: '**', redirectTo: 'nosotros' },

@@ -51,6 +51,7 @@
       </div>
 
       <!-- TABLA -->
+<!-- TABLA -->
 <div class="table-responsive">
   <table class="table mb-0 tabla-limpiada table-fixed table-sm">
     <thead>
@@ -68,12 +69,11 @@
           Responsable
         </th>
 
-        <!-- Mano Obra: ordenable -->
-        <th class="fs-6 fs-sm-8 th-ordenable" style="min-width: 70px; width: 70px;"
-            (click)="OrdenarPor('ManoObra')">
-          Mano Obra
-          <i *ngIf="ColumnaOrden === 'ManoObra'" class="bi"
-             [ngClass]="OrdenAscendente ? 'bi-caret-up-fill' : 'bi-caret-down-fill'"></i>
+        
+
+        <!-- Monto: suma -->
+        <th class="fs-6 fs-sm-8" style="min-width: 90px; width: 90px;">
+          Monto
         </th>
 
         <!-- Estatus: no ordenable -->
@@ -90,8 +90,9 @@
           (mouseleave)="FinalizarArrastre()" (touchstart)="IniciarArrastre($event, m)"
           (touchmove)="DuranteArrastre($event)" (touchend)="FinalizarArrastre()">
 
-        <td colspan="4" class="p-0">
-          <div class="fila-contenido fs-12 fs-sm-8">
+        <td colspan="7" class="p-0">
+          <div class="fila-contenido fs-12 fs-sm-8 d-flex">
+            
             <div class="celda text-truncate" style="width:70px;">
               {{ m.FechaMantenimiento | date:'dd/MM/yyyy' }}
             </div>
@@ -99,9 +100,8 @@
             <div class="celda text-truncate" style="width:100px; word-break: break-word; overflow-wrap: break-word;">
               {{ m.Responsable }}
             </div>
-
-            <div class="celda text-truncate" style="width:70px;">
-              Q {{ m.ManoObra | number:'1.2-2' }}
+            <div class="celda text-truncate" style="width:90px;">
+              Q {{ CalcularMonto(m) | number:'1.2-2' }}
             </div>
 
             <div class="celda text-truncate" style="width:90px;">
@@ -112,6 +112,7 @@
                 <i class="bi bi-exclamation-circle-fill me-1"></i> Pendiente
               </span>
             </div>
+
           </div>
         </td>
 
@@ -119,6 +120,8 @@
     </tbody>
   </table>
 </div>
+
+
 
     </div>
   </div>

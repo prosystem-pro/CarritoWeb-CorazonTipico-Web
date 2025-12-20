@@ -348,11 +348,11 @@ export class HeaderComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.subscription?.unsubscribe();
   }
+@HostListener('window:resize', ['$event'])
+onResize(event: Event) {
+  this.verificarVista();
+}
 
-  @HostListener('window:resize', ['$event'])
-  onResize() {
-    this.verificarVista();
-  }
 
   cargarRedesSociales(): void {
     this.redSocialServicio.Listado('Navbar').subscribe({
