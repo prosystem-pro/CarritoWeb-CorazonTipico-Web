@@ -217,6 +217,9 @@ export class AppComponent implements OnInit {
   esLoginTC(): boolean {
     return this.router.url === '/logintc';
   }
+  esReportes(): boolean {
+    return this.router.url === '/reportes';
+  }
 
   mostrarSidebar(): boolean {
     return !(

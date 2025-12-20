@@ -38,4 +38,8 @@ export class ViajesServicio {
       map(viajes => (viajes.data && viajes.data.length > 0 ? viajes.data[0] : null))
     );
   }
+
+  ObtenerReporteMensual(anio: number, mes: number): Observable<any> {
+    return this.http.get(`${this.Url}/reporte/${anio}/${mes}`);
+  }
 }
