@@ -3,6 +3,7 @@ import { ViajesServicio } from '../../../Servicios/ViajesServicio';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { NabarSidebarComponent } from "../nabar-sidebar/nabar-sidebar.component";
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-reportes',
@@ -15,12 +16,13 @@ export class ReportesComponent implements OnInit{
   anioActual = new Date().getFullYear();
   mesActual = new Date().getMonth() + 1;
 
-  constructor(private viajesServicio: ViajesServicio) {}
+  constructor(private viajesServicio: ViajesServicio,private router: Router) {}
 
   ngOnInit(): void {
     this.cargarReporte();
   }
 
+  
   cargarReporte(): void {
     this.viajesServicio
       .ObtenerReporteMensual(this.anioActual, this.mesActual)
@@ -33,4 +35,8 @@ export class ReportesComponent implements OnInit{
         }
       });
   }
+    RegresarInicio() {
+    this.router.navigate(['/iniciotc']);
+  }
+
 }

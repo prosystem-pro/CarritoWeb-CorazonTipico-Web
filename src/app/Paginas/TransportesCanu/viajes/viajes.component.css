@@ -96,11 +96,14 @@
 /* ======================
    ESTILOS MÓVILES
    ====================== */
-@media (max-width: 576px) {
+@media (min-width: 400px) and (max-width: 576px) {
   .tabla-limpiada th,
   .tabla-limpiada .celda,
   .fila-contenido,
   .badge {
-    font-size: 0.75rem !important; /* más pequeño para móviles */
+    font-size: 0.53rem !important; /* más pequeño solo en este rango */
   }
 }
+
+
+

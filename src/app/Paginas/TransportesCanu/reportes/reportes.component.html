@@ -2,119 +2,118 @@
 
 <div class="container-fluid mt-4" *ngIf="reporte">
 
-  <div class="card shadow-lg w-100 rounded-3">
+    <div class="card shadow-lg w-100 rounded-5">
 
-    <!-- HEADER -->
-    <div class="card-header bg-dark text-white text-center py-3 rounded-top">
-      <h5 class="mb-0 fw-semibold">Reportes</h5>
-    </div>
+        <!-- HEADER -->
+<!-- HEADER -->
+<div class="card-header text-white d-flex align-items-center justify-content-center position-relative" 
+     style="background-color: #000000; border-radius: 1.5rem; padding-top: 1.5rem; padding-bottom: 1.5rem;">
+  
+  <i class="bi bi-file-bar-graph me-3" style="font-size: 1.5rem;"></i>
+  <h5 class="mb-0 fw-semibold">Reportes</h5>
 
-    <!-- BODY -->
-    <div class="card-body px-3 py-4">
+  <!-- BOTÓN X -->
+  <button type="button" (click)="RegresarInicio()"
+          style="position: absolute; top: 50%; right: 1rem; transform: translateY(-50%);
+                 background-color: transparent; border: none; padding: 0; z-index: 10;">
 
-      <!-- TOTAL VIAJES -->
-      <div class="row mb-4">
-        <div class="col-12 col-md-4 mx-md-auto">
-          <div class="card shadow-sm rounded-4 overflow-hidden d-flex flex-column"
-               style="height: 260px;">
+    <!-- CUADRO MÁS GRANDE -->
+    <div style="width: 44px; height: 44px; background-color: white; border-radius: 8px; display: flex; align-items: center; justify-content: center;">
 
-            <!-- TEXTO 50% -->
-            <div class="card-body text-center"
-                 style="height: 50%;">
-              <h3 class="fw-bold mb-1">
-                Q {{ reporte.TotalViajes | number:'1.2-2' }}
-              </h3>
-              <p class="text-muted mb-0">Total de viajes</p>
-            </div>
-
-            <!-- IMAGEN 50% -->
-            <div style="height: 50%; width: 100%;">
-              <img src="GraficaAzul.png"
-                   style="
-                     width: 100%;
-                     height: 100%;
-                     display: block;
-                     object-fit: fill;
-                   ">
-            </div>
-
-          </div>
-        </div>
+      <!-- CÍRCULO MÁS PEQUEÑO -->
+      <div style="width: 24px; height: 24px; background-color: white; border: 2px solid black; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold;">
+        ✕
       </div>
 
-      <!-- REPORTES INTERMEDIOS -->
-      <div class="row g-3 mb-4">
+    </div>
+  </button>
+</div>
 
-        <div class="col-6 col-md-4" *ngFor="let item of [
-          {v: reporte.Chofer, t:'Pago Chofer', i:'GraficaRojo.png'},
-          {v: reporte.Combustible, t:'Combustible', i:'GraficaRojo.png'},
-          {v: reporte.ImprevistosViajes, t:'Imprevistos Viajes', i:'GraficaRojo.png'},
-          {v: reporte.Mecanico, t:'Mecánico', i:'GraficaRojo.png'},
-          {v: reporte.Repuestos, t:'Repuestos', i:'GraficaRojo.png'},
-          {v: reporte.ImprevistosMantenimiento, t:'Imprevistos Mantenimiento', i:'GraficaRojo.png'}
+
+
+
+
+        <!-- BODY -->
+        <div class="card-body px-3 py-4">
+
+            <!-- TOTAL VIAJES -->
+            <div class="row mb-4 justify-content-center">
+                <div class="col-10 col-md-4">
+                    <div class="card shadow-sm rounded-4 overflow-hidden d-flex flex-column responsive-card">
+
+                        <!-- TEXTO -->
+                        <div class="card-body text-center" style="height: 50%;">
+                            <h3 class="fw-bold mb-1">
+                                Q {{ reporte.TotalViajes | number:'1.2-2' }}
+                            </h3>
+                            <p class="text-muted mb-0">Total de viajes</p>
+                        </div>
+
+                        <!-- GRAFICA ANIMADA -->
+                        <div class="animated-chart chart-blue">
+                            <span></span><span></span><span></span><span></span><span></span>
+                            <span></span><span></span><span></span><span></span><span></span>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- REPORTES INTERMEDIOS -->
+            <div class="row g-3 mb-4 justify-content-center">
+                <div class="col-6 col-md-4" *ngFor="let item of [
+          {v: reporte.Chofer, t:'Pago Chofer', c:'chart-red'},
+          {v: reporte.Combustible, t:'Combustible', c:'chart-red'},
+          {v: reporte.ImprevistosViajes, t:'Imprevistos Viajes', c:'chart-red'},
+          {v: reporte.Mecanico, t:'Mecánico', c:'chart-red'},
+          {v: reporte.Repuestos, t:'Repuestos', c:'chart-red'},
+          {v: reporte.ImprevistosMantenimiento, t:'Imprevistos Mantenimiento', c:'chart-red'}
         ]">
 
-          <div class="card shadow-sm rounded-4 overflow-hidden d-flex flex-column"
-               style="height: 220px;">
+                    <div class="card shadow-sm rounded-4 overflow-hidden d-flex flex-column responsive-card">
 
-            <!-- TEXTO -->
-            <div class="card-body text-center"
-                 style="height: 50%;">
-              <h5 class="fw-bold">
-                Q {{ item.v | number:'1.2-2' }}
-              </h5>
-              <p class="text-muted mb-0">{{ item.t }}</p>
+                        <div class="card-body text-center" style="height: 50%;">
+                            <h5 class="fw-bold">
+                                Q {{ item.v | number:'1.2-2' }}
+                            </h5>
+                            <p class="text-muted mb-0">{{ item.t }}</p>
+                        </div>
+
+                        <div [class]="'animated-chart ' + item.c">
+                            <span></span><span></span><span></span><span></span><span></span>
+                            <span></span><span></span><span></span><span></span><span></span>
+                        </div>
+
+                    </div>
+                </div>
             </div>
 
-            <!-- IMAGEN -->
-            <div style="height: 80%; width: 100%;">
-              <img [src]="item.i"
-                   style="
-                     width: 100%;
-                     height: 100%;
-                     display: block;
-                     object-fit: fill;
-                   ">
+            <!-- GANANCIAS -->
+            <div class="row justify-content-center">
+                <div class="col-10 col-md-4">
+                    <div class="card shadow-sm rounded-4 overflow-hidden d-flex flex-column responsive-card">
+
+                        <div class="card-body text-center" style="height: 50%;">
+                            <h3 class="fw-bold text-black mb-1">
+                                Q {{ reporte.Ganancias | number:'1.2-2' }}
+                            </h3>
+                            <p class="text-muted mb-0">Ganancias</p>
+                        </div>
+
+                        <div class="animated-chart chart-green">
+                            <span></span><span></span><span></span><span></span><span></span>
+                            <span></span><span></span><span></span><span></span><span></span>
+                        </div>
+
+                    </div>
+                </div>
             </div>
 
-          </div>
         </div>
-
-      </div>
-
-      <!-- GANANCIAS -->
-      <div class="row">
-        <div class="col-12 col-md-4 mx-md-auto">
-          <div class="card shadow-sm rounded-4 overflow-hidden d-flex flex-column"
-               style="height: 260px;">
-
-            <div class="card-body text-center"
-                 style="height: 50%;">
-              <h3 class="fw-bold text-black mb-1">
-                Q {{ reporte.Ganancias | number:'1.2-2' }}
-              </h3>
-              <p class="text-muted mb-0">Ganancias</p>
-            </div>
-
-            <div style="height: 50%; width: 100%;">
-              <img src="GraficaVerde.png"
-                   style="
-                     width: 100%;
-                     height: 100%;
-                     display: block;
-                     object-fit: fill;
-                   ">
-            </div>
-
-          </div>
-        </div>
-      </div>
-
     </div>
-  </div>
 </div>
 
 <!-- CARGANDO -->
 <div class="text-center mt-5" *ngIf="!reporte">
-  <span class="text-muted">Cargando reporte...</span>
+    <span class="text-muted">Cargando reporte...</span>
 </div>
