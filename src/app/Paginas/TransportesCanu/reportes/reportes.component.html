@@ -2,182 +2,151 @@
 
 <div class="container-fluid mt-4" *ngIf="reporte">
 
-    <div class="card shadow-lg w-100 rounded-5">
+  <div class="card shadow-lg w-100 rounded-5">
 
-        <!-- HEADER -->
-        <div class="card-header text-white py-3" style="background-color: #000000; 
-            border-radius: 12px; 
-            box-shadow: 0 4px 6px rgba(0,0,0,0.25);">
+    <!-- HEADER -->
+    <div class="card-header text-white py-3" style="background-color: #000000; 
+        border-radius: 12px; 
+        box-shadow: 0 4px 6px rgba(0,0,0,0.25);">
 
-            <div class="row align-items-center">
-                <!-- Columna icono -->
-                <div class="col-auto">
-                    <i class="bi bi-file-bar-graph fs-3 fs-sm-4 text-white"></i>
-                </div>
-
-                <!-- Columna título -->
-                <div class="col text-center">
-                    <h5 class="mb-0 fw-semibold fs-5 fs-sm-6"
-                        style="word-break: break-word; overflow-wrap: break-word;">
-                        Reportes
-                    </h5>
-                </div>
-
-                <!-- Columna botón cerrar -->
-                <div class="col-auto">
-                    <button type="button" class="btn p-2"
-                        style="background-color:white; border-radius:8px; border:2px solid black;"
-                        (click)="RegresarInicio()">
-                        <div class="rounded-circle d-flex align-items-center justify-content-center"
-                            style="width:28px; height:28px; background-color:white;">
-                            ✕
-                        </div>
-                    </button>
-                </div>
-            </div>
+      <div class="row align-items-center">
+        <div class="col-auto">
+          <i class="bi bi-file-bar-graph fs-3 fs-sm-4 text-white"></i>
         </div>
-
-        <!-- BODY -->
-        <div class="card-body px-3 py-4">
-
-            <!-- FILTROS AÑO / MES -->
-            <div class="row mb-3 justify-content-start">
-                <div class="col-12 col-md d-flex gap-2 justify-content-start flex-wrap">
-
-                    <select class="form-select form-select-sm" [(ngModel)]="filtroAnio" (change)="Filtrar()"
-                        style="max-width: 140px;">
-                        <option value="">Año</option>
-                        <option *ngFor="let a of anios" [value]="a">{{ a }}</option>
-                    </select>
-
-                    <select class="form-select form-select-sm" [(ngModel)]="filtroMes" (change)="Filtrar()"
-                        style="max-width: 140px;">
-                        <option value="">Mes</option>
-                        <option *ngFor="let m of meses" [value]="m.value">{{ m.name }}</option>
-                    </select>
-
-                </div>
-            </div>
-
-            <!-- TITULO DEL MES -->
-            <div class="row mb-4" *ngIf="nombreMesSeleccionado">
-                <div class="col-12">
-                    <div class="text-center text-white py-2" style="background-color: #000000; border-radius: 8px;">
-                        <strong>{{ nombreMesSeleccionado }}</strong>
-                    </div>
-                </div>
-            </div>
-
-            <!-- TOTAL VIAJES -->
-            <div class="row mb-4 justify-content-center">
-                <div class="col-10 col-md-4">
-                    <div class="card shadow-sm rounded-4 overflow-hidden d-flex flex-column responsive-card">
-
-                        <!-- TEXTO -->
-                        <div class="card-body text-center d-flex flex-column align-items-center justify-content-center">
-                            <h3 class="fw-bold mb-1">
-                                Q {{ reporte.TotalViajes | number:'1.2-2' }}
-                            </h3>
-                            <p class="text-muted mb-0">Total de viajes</p>
-                        </div>
-
-                        <!-- DONUT CHART -->
-                        <div class="chart-container my-2">
-                            <svg viewBox="0 0 36 36" class="circular-chart blue">
-                                <path class="circle-bg"
-                                      d="M18 2.0845
-                                         a 15.9155 15.9155 0 0 1 0 31.831
-                                         a 15.9155 15.9155 0 0 1 0 -31.831"/>
-                                <path class="circle"
-                                      [attr.stroke-dasharray]="reporte.TotalViajes + ', 100'"
-                                      d="M18 2.0845
-                                         a 15.9155 15.9155 0 0 1 0 31.831
-                                         a 15.9155 15.9155 0 0 1 0 -31.831"/>
-                                <text x="18" y="20.35" class="percentage">{{ reporte.TotalViajes }}</text>
-                            </svg>
-                        </div>
-
-                    </div>
-                </div>
-            </div>
-
-            <!-- REPORTES INTERMEDIOS -->
-            <div class="row g-3 mb-4 justify-content-center">
-                <div class="col-6 col-md-4" *ngFor="let item of [
-                  {v: reporte.Chofer, t:'Pago Chofer', color:'#dc3545'},
-                  {v: reporte.Combustible, t:'Combustible', color:'#0d6efd'},
-                  {v: reporte.ImprevistosViajes, t:'Imprevistos Viajes', color:'#ffc107'},
-                  {v: reporte.Mecanico, t:'Mecánico', color:'#198754'},
-                  {v: reporte.Repuestos, t:'Repuestos', color:'#6f42c1'},
-                  {v: reporte.ImprevistosMantenimiento, t:'Imprevistos Mantenimiento', color:'#fd7e14'}
-                ]">
-
-                    <div class="card shadow-sm rounded-4 overflow-hidden d-flex flex-column responsive-card">
-
-                        <div class="card-body text-center d-flex flex-column align-items-center justify-content-center">
-                            <h5 class="fw-bold">
-                                Q {{ item.v | number:'1.2-2' }}
-                            </h5>
-                            <p class="text-muted mb-0">{{ item.t }}</p>
-                        </div>
-
-                        <!-- RADIAL PROGRESS CHART -->
-                        <div class="chart-container my-2">
-                            <svg viewBox="0 0 36 36" class="circular-chart" [ngStyle]="{'--circle-color': item.color}">
-                                <path class="circle-bg"
-                                      d="M18 2.0845
-                                         a 15.9155 15.9155 0 0 1 0 31.831
-                                         a 15.9155 15.9155 0 0 1 0 -31.831"/>
-                                <path class="circle"
-                                      [attr.stroke-dasharray]="item.v + ', 100'"
-                                      d="M18 2.0845
-                                         a 15.9155 15.9155 0 0 1 0 31.831
-                                         a 15.9155 15.9155 0 0 1 0 -31.831"/>
-                                <text x="18" y="20.35" class="percentage">{{ item.v | number:'1.0-0' }}</text>
-                            </svg>
-                        </div>
-
-                    </div>
-                </div>
-            </div>
-
-            <!-- GANANCIAS -->
-            <div class="row justify-content-center">
-                <div class="col-10 col-md-4">
-                    <div class="card shadow-sm rounded-4 overflow-hidden d-flex flex-column responsive-card">
-
-                        <div class="card-body text-center d-flex flex-column align-items-center justify-content-center">
-                            <h3 class="fw-bold text-black mb-1">
-                                Q {{ reporte.Ganancias | number:'1.2-2' }}
-                            </h3>
-                            <p class="text-muted mb-0">Ganancias</p>
-                        </div>
-
-                        <!-- DONUT CHART -->
-                        <div class="chart-container my-2">
-                            <svg viewBox="0 0 36 36" class="circular-chart green">
-                                <path class="circle-bg"
-                                      d="M18 2.0845
-                                         a 15.9155 15.9155 0 0 1 0 31.831
-                                         a 15.9155 15.9155 0 0 1 0 -31.831"/>
-                                <path class="circle"
-                                      [attr.stroke-dasharray]="reporte.Ganancias + ', 100'"
-                                      d="M18 2.0845
-                                         a 15.9155 15.9155 0 0 1 0 31.831
-                                         a 15.9155 15.9155 0 0 1 0 -31.831"/>
-                                <text x="18" y="20.35" class="percentage">{{ reporte.Ganancias }}</text>
-                            </svg>
-                        </div>
-
-                    </div>
-                </div>
-            </div>
-
+        <div class="col text-center">
+          <h5 class="mb-0 fw-semibold fs-5 fs-sm-6"
+              style="word-break: break-word; overflow-wrap: break-word;">
+            Reportes
+          </h5>
         </div>
+        <div class="col-auto">
+          <button type="button" class="btn p-2"
+              style="background-color:white; border-radius:8px; border:2px solid black;"
+              (click)="RegresarInicio()">
+            <div class="rounded-circle d-flex align-items-center justify-content-center"
+                style="width:28px; height:28px; background-color:white;">
+              ✕
+            </div>
+          </button>
+        </div>
+      </div>
     </div>
+
+    <!-- BODY -->
+    <div class="card-body px-3 py-4">
+
+      <!-- FILTROS AÑO / MES -->
+      <div class="row mb-3 justify-content-start">
+        <div class="col-12 col-md d-flex gap-2 justify-content-start flex-wrap">
+          <select class="form-select form-select-sm" [(ngModel)]="filtroAnio" (change)="Filtrar()"
+              style="max-width: 140px;">
+            <option value="">Año</option>
+            <option *ngFor="let a of anios" [value]="a">{{ a }}</option>
+          </select>
+
+          <select class="form-select form-select-sm" [(ngModel)]="filtroMes" (change)="Filtrar()"
+              style="max-width: 140px;">
+            <option value="">Mes</option>
+            <option *ngFor="let m of meses" [value]="m.value">{{ m.name }}</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- TITULO DEL MES -->
+      <div class="row mb-4" *ngIf="nombreMesSeleccionado">
+        <div class="col-12">
+          <div class="text-center text-white py-2" style="background-color: #000000; border-radius: 8px;">
+            <strong>{{ nombreMesSeleccionado }}</strong>
+          </div>
+        </div>
+      </div>
+
+      <!-- TOTAL VIAJES -->
+      <div class="row mb-4 justify-content-center">
+        <div class="col-10 col-md-4">
+          <div class="card shadow-sm rounded-4 overflow-hidden d-flex flex-column card-flex">
+
+            <div class="card-body text-center d-flex flex-column align-items-center justify-content-center flex-grow-1">
+              <h3 class="fw-bold mb-1">
+                Q {{ reporte.TotalViajes | number:'1.2-2' }}
+              </h3>
+              <p class="text-muted mb-0">Total de viajes</p>
+            </div>
+
+            <div class="chart-container flex-shrink-0">
+              <svg viewBox="0 0 36 36" class="circular-chart blue">
+                <circle class="circle-bg" cx="18" cy="18" r="15.9155"/>
+                <circle class="circle" cx="18" cy="18" r="15.9155"
+                    [attr.stroke-dasharray]="reporte.TotalViajes + ', 100'"/>
+                <text x="18" y="20.35" class="percentage">{{ reporte.TotalViajes }}</text>
+              </svg>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- REPORTES INTERMEDIOS -->
+      <div class="row g-3 mb-4 justify-content-center">
+        <div class="col-6 col-md-4" *ngFor="let item of [
+          {v: reporte.Chofer, t:'Pago Chofer', color:'#dc3545'},
+          {v: reporte.Combustible, t:'Combustible', color:'#0d6efd'},
+          {v: reporte.ImprevistosViajes, t:'Imprevistos Viajes', color:'#ffc107'},
+          {v: reporte.Mecanico, t:'Mecánico', color:'#198754'},
+          {v: reporte.Repuestos, t:'Repuestos', color:'#6f42c1'},
+          {v: reporte.ImprevistosMantenimiento, t:'Imprevistos Mantenimiento', color:'#fd7e14'}
+        ]">
+          <div class="card shadow-sm rounded-4 overflow-hidden d-flex flex-column card-flex">
+
+            <div class="card-body text-center d-flex flex-column align-items-center justify-content-center flex-grow-1">
+              <h5 class="fw-bold">
+                Q {{ item.v | number:'1.2-2' }}
+              </h5>
+              <p class="text-muted mb-0">{{ item.t }}</p>
+            </div>
+
+            <div class="chart-container flex-shrink-0">
+              <svg viewBox="0 0 36 36" class="circular-chart" [ngStyle]="{'--circle-color': item.color}">
+                <circle class="circle-bg" cx="18" cy="18" r="15.9155"/>
+                <circle class="circle" cx="18" cy="18" r="15.9155"
+                    [attr.stroke-dasharray]="item.v + ', 100'"/>
+                <text x="18" y="20.35" class="percentage">{{ item.v | number:'1.0-0' }}</text>
+              </svg>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- GANANCIAS -->
+      <div class="row justify-content-center">
+        <div class="col-10 col-md-4">
+          <div class="card shadow-sm rounded-4 overflow-hidden d-flex flex-column card-flex">
+
+            <div class="card-body text-center d-flex flex-column align-items-center justify-content-center flex-grow-1">
+              <h3 class="fw-bold text-black mb-1">
+                Q {{ reporte.Ganancias | number:'1.2-2' }}
+              </h3>
+              <p class="text-muted mb-0">Ganancias</p>
+            </div>
+
+            <div class="chart-container flex-shrink-0">
+              <svg viewBox="0 0 36 36" class="circular-chart green">
+                <circle class="circle-bg" cx="18" cy="18" r="15.9155"/>
+                <circle class="circle" cx="18" cy="18" r="15.9155"
+                    [attr.stroke-dasharray]="reporte.Ganancias + ', 100'"/>
+                <text x="18" y="20.35" class="percentage">{{ reporte.Ganancias }}</text>
+              </svg>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
 </div>
 
-<!-- CARGANDO -->
 <div class="text-center mt-5" *ngIf="!reporte">
-    <span class="text-muted">Cargando reporte...</span>
+  <span class="text-muted">Cargando reporte...</span>
 </div>
