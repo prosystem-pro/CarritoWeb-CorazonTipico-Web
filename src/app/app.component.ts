@@ -110,19 +110,24 @@ export class AppComponent implements OnInit {
     }, this.tiempoMaxInactividadMs);
   }
 
-  // reiniciarTemporizadorInactividad(): void {
-  //   clearTimeout(this.temporizadorInactividad);
-  //   this.temporizadorInactividad = setTimeout(() => {
-  //     console.warn('Usuario inactivo. Cerrando sesión automáticamente...');
-  //     this.cerrarSesion();
-  //   }, this.tiempoMaxInactividadMs);
-  // }
 
   cerrarSesion(): void {
+    // Limpiar storage
     localStorage.removeItem('authToken');
     localStorage.removeItem('colorClasificacion');
     localStorage.removeItem('colorClasificacionTexto');
-    this.router.navigate(['/login']);
+
+    // Obtener la ruta actual
+    const rutaActual = this.router.url;
+
+    // Determinar a dónde redirigir según la ruta
+    if (['/viajes', '/mantenimiento', '/reportes', 'iniciotc'].some(ruta => rutaActual.startsWith(ruta))) {
+      // Si está en alguna de estas rutas, redirigir a logintc
+      this.router.navigate(['/logintc']);
+    } else {
+      // Para cualquier otra ruta, redirigir a login normal
+      this.router.navigate(['/login']);
+    }
   }
 
   @HostListener('window:beforeunload', ['$event'])

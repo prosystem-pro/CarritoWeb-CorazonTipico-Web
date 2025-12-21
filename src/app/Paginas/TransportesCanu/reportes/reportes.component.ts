@@ -39,7 +39,7 @@ export class ReportesComponent implements OnInit {
   constructor(
     private viajesServicio: ViajesServicio,
     private router: Router
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     const hoy = new Date();
@@ -55,6 +55,11 @@ export class ReportesComponent implements OnInit {
 
     this.actualizarNombreMes();
     this.cargarReporte();
+  }
+  GenerarLinea(data: number[]): string {
+    const max = Math.max(...data, 1);
+    const points = data.map((v, i) => `${(i / (data.length - 1)) * 100},${100 - (v / max) * 100}`).join(' ');
+    return points;
   }
 
   Filtrar(): void {
