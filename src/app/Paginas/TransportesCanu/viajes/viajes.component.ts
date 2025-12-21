@@ -18,8 +18,8 @@ export class ViajesComponent implements OnInit {
      VARIABLES DE ORDEN Y ARRASTRE
   ====================== */
   mensajeEliminarVisible = false;
-mensajeEliminarTexto = '';
-private filaPendiente: HTMLElement | null = null; 
+  mensajeEliminarTexto = '';
+  private filaPendiente: HTMLElement | null = null;
   ColumnaOrden: 'FechaViaje' | 'PrecioViaje' | '' = '';
   OrdenAscendente = true;
   Arrastrando = false;
@@ -41,10 +41,14 @@ private filaPendiente: HTMLElement | null = null;
   modoCreacion = false;
   modoEdicion = false;
 
-  filtroAnio = '';
+  /* ======================
+     FILTROS
+  ====================== */
+  filtroAnio: number | '' = '';
   filtroMes = '';
 
   anios: number[] = [];
+
   meses = [
     { value: '01', name: 'Enero' }, { value: '02', name: 'Febrero' },
     { value: '03', name: 'Marzo' }, { value: '04', name: 'Abril' },
@@ -54,9 +58,23 @@ private filaPendiente: HTMLElement | null = null;
     { value: '11', name: 'Noviembre' }, { value: '12', name: 'Diciembre' }
   ];
 
-  constructor(private viajesServicio: ViajesServicio, private router: Router) { }
+  constructor(private viajesServicio: ViajesServicio, private router: Router) {}
 
   ngOnInit(): void {
+    const hoy = new Date();
+    const anioActual = hoy.getFullYear();
+
+    // Año actual y dos anteriores (FIJO, NO SE SOBREESCRIBE)
+    this.anios = [
+      anioActual,
+      anioActual - 1,
+      anioActual - 2
+    ];
+
+    // Valores iniciales
+    this.filtroAnio = anioActual;
+    this.filtroMes = (hoy.getMonth() + 1).toString().padStart(2, '0');
+
     this.Listado();
   }
 
@@ -72,7 +90,7 @@ private filaPendiente: HTMLElement | null = null;
       PagoChofer: 0,
       PagoCombustible: 0,
       Imprevistos: 0,
-      Estado: 2, // 1 Cancelado, 2 Agendado, 3 Pendiente
+      Estado: 2,
       DescripcionViaje: ''
     };
   }
@@ -85,26 +103,28 @@ private filaPendiente: HTMLElement | null = null;
     this.viajesServicio.Listado().subscribe({
       next: resp => {
         this.viajes = resp.data || [];
-        this.viajesFiltrados = [...this.viajes];
-        this.generarAnios();
+        this.Filtrar();
         this.cargando = false;
       },
       error: () => this.cargando = false
     });
   }
 
-  generarAnios() {
-    this.anios = [...new Set(this.viajes.map(v => new Date(v.FechaViaje).getFullYear()))];
-  }
-
   /* ======================
      FILTROS
   ====================== */
   Filtrar() {
+    if (!this.filtroAnio || !this.filtroMes) {
+      this.viajesFiltrados = [...this.viajes];
+      return;
+    }
+
     this.viajesFiltrados = this.viajes.filter(v => {
       const f = new Date(v.FechaViaje);
-      return (!this.filtroAnio || f.getFullYear().toString() === this.filtroAnio) &&
-        (!this.filtroMes || (f.getMonth() + 1).toString().padStart(2, '0') === this.filtroMes);
+      return (
+        f.getFullYear() === this.filtroAnio &&
+        (f.getMonth() + 1).toString().padStart(2, '0') === this.filtroMes
+      );
     });
   }
 
@@ -115,7 +135,7 @@ private filaPendiente: HTMLElement | null = null;
   }
 
   /* ======================
-     CREAR
+     CREAR / EDITAR
   ====================== */
   MostrarFormularioCreacion() {
     this.viajeFormulario = this.viajeVacio();
@@ -129,9 +149,6 @@ private filaPendiente: HTMLElement | null = null;
     });
   }
 
-  /* ======================
-     EDITAR
-  ====================== */
   Editar(viaje: any) {
     this.viajeFormulario = { ...viaje };
     this.modoEdicion = true;
@@ -155,7 +172,7 @@ private filaPendiente: HTMLElement | null = null;
   }
 
   /* ======================
-     ELIMINAR
+     ELIMINAR / ARRASTRE
   ====================== */
   Eliminar(id: number) {
     this.viajesServicio.Eliminar(id).subscribe(() => this.Listado());
@@ -166,9 +183,7 @@ private filaPendiente: HTMLElement | null = null;
       this.Eliminar(viaje.CodigoViaje);
     }
   }
-  /* ======================
-     ORDENAR COLUMNAS
-  ====================== */
+
   OrdenarPor(columna: 'FechaViaje' | 'PrecioViaje') {
     if (this.ColumnaOrden === columna) {
       this.OrdenAscendente = !this.OrdenAscendente;
@@ -183,9 +198,7 @@ private filaPendiente: HTMLElement | null = null;
       return this.OrdenAscendente ? A - B : B - A;
     });
   }
-  /* ======================
-     DESLIZAR FILAS
-  ====================== */
+
   IniciarArrastre(event: any, viaje: any) {
     this.Arrastrando = true;
     this.ViajeArrastrado = viaje;
@@ -203,55 +216,53 @@ private filaPendiente: HTMLElement | null = null;
     this.ElementoFila.style.transform = `translateX(${desplazamiento}px)`;
   }
 
-FinalizarArrastre() {
-  if (!this.Arrastrando || !this.ElementoFila) return;
+  FinalizarArrastre() {
+    if (!this.Arrastrando || !this.ElementoFila) return;
 
-  const desplazamiento = parseInt(this.ElementoFila.style.transform.replace('translateX(', '')) || 0;
-  const fila = this.ElementoFila.parentElement?.parentElement;
-  fila?.classList.remove('activa');
+    const desplazamiento = parseInt(this.ElementoFila.style.transform.replace('translateX(', '')) || 0;
+    const fila = this.ElementoFila.parentElement?.parentElement;
+    fila?.classList.remove('activa');
 
-  if (desplazamiento > this.UmbralEliminar) {
-    // Guardamos la fila y el viaje para mostrar el mensaje
-    this.filaPendiente = this.ElementoFila;
-    this.MostrarMensajeEliminar(this.ViajeArrastrado);
-  } else {
-    this.ElementoFila.style.transform = 'translateX(0)';
-    this.LimpiarArrastre();
+    if (desplazamiento > this.UmbralEliminar) {
+      this.filaPendiente = this.ElementoFila;
+      this.MostrarMensajeEliminar(this.ViajeArrastrado);
+    } else {
+      this.ElementoFila.style.transform = 'translateX(0)';
+      this.LimpiarArrastre();
+    }
   }
-}
 
-MostrarMensajeEliminar(viaje: any) {
-  this.ViajeArrastrado = viaje;
-  this.mensajeEliminarTexto = `¿Desea eliminar el viaje de ${viaje.Cliente}?`;
-  this.mensajeEliminarVisible = true;
-}
-
-ConfirmarEliminar() {
-  if (this.ViajeArrastrado) {
-    this.Eliminar(this.ViajeArrastrado.CodigoViaje);
+  MostrarMensajeEliminar(viaje: any) {
+    this.ViajeArrastrado = viaje;
+    this.mensajeEliminarTexto = `¿Desea eliminar el viaje de ${viaje.Cliente}?`;
+    this.mensajeEliminarVisible = true;
   }
-  this.CerrarMensajeEliminar();
-}
 
-CancelarEliminar() {
-  if (this.filaPendiente) {
-    // Regresamos la fila a su posición original
-    this.filaPendiente.style.transform = 'translateX(0)';
+  ConfirmarEliminar() {
+    if (this.ViajeArrastrado) {
+      this.Eliminar(this.ViajeArrastrado.CodigoViaje);
+    }
+    this.CerrarMensajeEliminar();
   }
-  this.CerrarMensajeEliminar();
-}
 
-CerrarMensajeEliminar() {
-  this.mensajeEliminarVisible = false;
-  this.filaPendiente = null;
-  this.ViajeArrastrado = null;
-  this.Arrastrando = false;
-  this.ElementoFila = null;
-}
+  CancelarEliminar() {
+    if (this.filaPendiente) {
+      this.filaPendiente.style.transform = 'translateX(0)';
+    }
+    this.CerrarMensajeEliminar();
+  }
 
-private LimpiarArrastre() {
-  this.Arrastrando = false;
-  this.ViajeArrastrado = null;
-  this.ElementoFila = null;
-}
+  CerrarMensajeEliminar() {
+    this.mensajeEliminarVisible = false;
+    this.filaPendiente = null;
+    this.ViajeArrastrado = null;
+    this.Arrastrando = false;
+    this.ElementoFila = null;
+  }
+
+  private LimpiarArrastre() {
+    this.Arrastrando = false;
+    this.ViajeArrastrado = null;
+    this.ElementoFila = null;
+  }
 }

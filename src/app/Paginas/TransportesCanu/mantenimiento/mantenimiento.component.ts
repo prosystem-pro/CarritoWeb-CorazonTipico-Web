@@ -54,9 +54,22 @@ export class MantenimientoComponent implements OnInit {
     { value: '11', name: 'Noviembre' }, { value: '12', name: 'Diciembre' }
   ];
 
-  constructor(private mantenimientoServicio: MantenimientoServicio, private router: Router) { }
+  constructor(
+    private mantenimientoServicio: MantenimientoServicio,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
+    const hoy = new Date();
+    const anioActual = hoy.getFullYear();
+
+    // SOLO: año actual y dos anteriores
+    this.anios = [
+      anioActual,
+      anioActual - 1,
+      anioActual - 2
+    ];
+
     this.Listado();
   }
 
@@ -71,7 +84,7 @@ export class MantenimientoComponent implements OnInit {
       ManoObra: 0,
       CostoRepuestos: 0,
       Imprevistos: 0,
-      Estado: 1, // 1 Activo, 2 En proceso, 3 Finalizado (ejemplo)
+      Estado: 1,
       DescripcionMantenimiento: ''
     };
   }
@@ -85,15 +98,10 @@ export class MantenimientoComponent implements OnInit {
       next: resp => {
         this.mantenimientos = resp.data || [];
         this.mantenimientosFiltrados = [...this.mantenimientos];
-        this.generarAnios();
         this.cargando = false;
       },
       error: () => this.cargando = false
     });
-  }
-
-  generarAnios() {
-    this.anios = [...new Set(this.mantenimientos.map(m => new Date(m.FechaMantenimiento).getFullYear()))];
   }
 
   /* ======================
@@ -102,9 +110,8 @@ export class MantenimientoComponent implements OnInit {
   Filtrar() {
     this.mantenimientosFiltrados = this.mantenimientos.filter(m => {
       const f = new Date(m.FechaMantenimiento);
-      console.log('mantenimientos filtra', this.mantenimientosFiltrados)
       return (!this.filtroAnio || f.getFullYear().toString() === this.filtroAnio) &&
-        (!this.filtroMes || (f.getMonth() + 1).toString().padStart(2, '0') === this.filtroMes);
+             (!this.filtroMes || (f.getMonth() + 1).toString().padStart(2, '0') === this.filtroMes);
     });
   }
 
@@ -195,17 +202,15 @@ export class MantenimientoComponent implements OnInit {
     fila?.classList.remove('activa');
 
     if (desplazamiento > this.UmbralEliminar) {
-      // Mostrar modal Bootstrap y mantener referencia para restaurar
       this.MostrarMensajeEliminar(this.MantenimientoArrastrado, '¿Eliminar este mantenimiento?');
-      // No resetear aún ElementoFila ni MantenimientoArrastrado
     } else {
-      // Si no pasó el umbral, regresamos la fila a su lugar y reseteamos
       this.ElementoFila.style.transform = 'translateX(0)';
       this.LimpiarArrastre();
     }
 
     this.Arrastrando = false;
   }
+
   LimpiarArrastre() {
     this.ElementoFila = null;
     this.MantenimientoArrastrado = null;
@@ -226,12 +231,11 @@ export class MantenimientoComponent implements OnInit {
 
   CancelarEliminar() {
     if (this.ElementoFila) {
-      this.ElementoFila.style.transform = 'translateX(0)'; // regresa la fila a su posición
+      this.ElementoFila.style.transform = 'translateX(0)';
     }
     this.CerrarModalEliminar();
-    this.LimpiarArrastre(); // limpiar referencias
+    this.LimpiarArrastre();
   }
-
 
   CerrarModalEliminar() {
     this.mensajeEliminarVisible = false;
@@ -256,10 +260,8 @@ export class MantenimientoComponent implements OnInit {
       return this.OrdenAscendente ? A - B : B - A;
     });
   }
-  
-  // Devuelve la suma de ManoObra, CostoRespuestos e Imprevistos para un mantenimiento
-CalcularMonto(m: any): number {
-  return (m.ManoObra || 0) + (m.CostoRepuestos || 0) + (m.Imprevistos || 0);
-}
 
+  CalcularMonto(m: any): number {
+    return (m.ManoObra || 0) + (m.CostoRepuestos || 0) + (m.Imprevistos || 0);
+  }
 }

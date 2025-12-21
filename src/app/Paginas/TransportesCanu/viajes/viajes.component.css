@@ -2,116 +2,143 @@
    FILAS DESLIZABLES
    ====================== */
 .fila-normal {
-  user-select: none;
-  cursor: grab;
+    user-select: none;
+    cursor: grab;
 }
 
 .fila-arrastrando {
-  background-color: #ffe6e6;
+    background-color: #ffe6e6;
 }
 
 .fila-deslizable {
-  overflow: hidden;
-  transition: transform 0.25s ease;
-  cursor: grab;
+    overflow: hidden;
+    transition: transform 0.25s ease;
+    cursor: grab;
 }
 
 .fila-deslizable.arrastrando {
-  cursor: grabbing;
+    cursor: grabbing;
 }
 
 .fila-deslizable.activa .fila-contenido {
-  transition: none; /* mientras se arrastra */
+    transition: none;
+    /* mientras se arrastra */
 }
 
 /* ======================
    CONTENIDO DE FILAS
    ====================== */
 .fila-contenido {
-  display: flex; /* se usa flex para columnas fijas */
-  gap: 12px; /* separación entre columnas */
-  padding: 8px 12px; /* padding interno */
+    display: flex;
+    /* se usa flex para columnas fijas */
+    gap: 12px;
+    /* separación entre columnas */
+    padding: 8px 12px;
+    /* padding interno */
 }
 
 .celda {
-  flex: 1;
-  padding: 0.25rem 0.5rem;
+    flex: 1;
+    padding: 0.25rem 0.5rem;
 }
 
 /* Solo la columna Nombre quiebra palabra si es muy largo */
 .fila-contenido .celda:nth-child(2) {
-  white-space: normal;
-  word-break: break-word;
-  overflow-wrap: break-word;
+    white-space: normal;
+    word-break: break-word;
+    overflow-wrap: break-word;
 }
 
 /* ======================
    BADGES ESTADOS
    ====================== */
 .badge {
-  padding: 6px 10px;
-  font-size: 0.85rem;
-  border-radius: 8px;
-  color: #fff;
-  display: inline-flex;
-  align-items: center;
+    padding: 6px 10px;
+    font-size: 0.85rem;
+    border-radius: 8px;
+    color: #fff;
+    display: inline-flex;
+    align-items: center;
 }
 
-.estado-cancelado { background-color: #198754; }
-.estado-agendado  { background-color: #0d6efd; }
-.estado-pendiente { background-color: #dc3545; }
+.estado-cancelado {
+    background-color: #198754;
+}
+
+.estado-agendado {
+    background-color: #0d6efd;
+}
+
+.estado-pendiente {
+    background-color: #dc3545;
+}
 
 /* ======================
    TABLA SIN BORDES, SOLO LÍNEAS DIVISORAS
    ====================== */
 .tabla-limpiada {
-  border-collapse: collapse;
-  width: 100%;
+    border-collapse: collapse;
+    width: 100%;
 }
 
 .tabla-limpiada thead th {
-  border-bottom: 2px solid #adb5bd; /* línea más gruesa para encabezados */
-  text-align: left;
-  padding: 12px 8px;
+    border-bottom: 2px solid #adb5bd;
+    /* línea más gruesa para encabezados */
+    text-align: left;
+    padding: 12px 8px;
 }
 
 .tabla-limpiada tbody td {
-  border-bottom: 1px solid #dee2e6; /* divisorias entre filas */
-  padding: 10px 8px;
+    border-bottom: 1px solid #dee2e6;
+    /* divisorias entre filas */
+    padding: 10px 8px;
 }
 
 /* Quita la línea divisoria de la última fila */
 .tabla-limpiada tbody tr:last-child td {
-  border-bottom: none;
+    border-bottom: none;
 }
 
 /* ======================
    COLUMNAS ORDENABLES
    ====================== */
 .th-ordenable {
-  cursor: pointer;
-  user-select: none;
+    cursor: pointer;
+    user-select: none;
 }
 
 /* ======================
    ESTILOS MÓVILES
    ====================== */
 @media (min-width: 400px) and (max-width: 576px) {
-  .tabla-limpiada th,
-  .tabla-limpiada .celda,
-  .fila-contenido,
-  .badge {
-    font-size: 0.5rem !important; /* más pequeño solo en este rango */
-  }
-}
-@media (max-width: 399px)  {
-  .tabla-limpiada th,
-  .tabla-limpiada .celda,
-  .fila-contenido,
-  .badge {
-    font-size: 0.5rem !important; /* más pequeño solo en este rango */
-  }
+
+    .tabla-limpiada th,
+    .tabla-limpiada .celda,
+    .fila-contenido,
+    .badge {
+        font-size: 0.52rem !important;
+        /* más pequeño solo en este rango */
+    }
 }
 
+@media (min-width: 360px) and (max-width: 399px) {
 
+    .tabla-limpiada th,
+    .tabla-limpiada .celda,
+    .fila-contenido,
+    .badge {
+        font-size: 0.4rem !important;
+        /* más pequeño solo en este rango */
+    }
+}
 
+@media (max-width: 359px) {
+
+    .tabla-limpiada th,
+    .tabla-limpiada .celda,
+    .fila-contenido,
+    .badge {
+        font-size: 0.3rem !important;
+        /* más pequeño solo en este rango */
+    }
+}

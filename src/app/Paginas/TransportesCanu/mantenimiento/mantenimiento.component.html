@@ -2,257 +2,269 @@
 
 <div class="container-fluid mt-3 px-1">
 
-  <!-- LISTADO -->
-  <div *ngIf="!modoCreacion && !modoEdicion" class="card shadow-sm w-100"
-       style="max-width: 99%; border-radius: 12px;">
+    <!-- LISTADO -->
+    <div *ngIf="!modoCreacion && !modoEdicion" class="card shadow-sm w-100"
+        style="max-width: 99%; border-radius: 12px;">
 
-    <!-- HEADER -->
-<div class="card-header text-white position-relative py-3"
-     style="background-color: #000000; 
-            border-radius: 12px; 
-            box-shadow: 0 4px 6px rgba(0,0,0,0.25);">
-      <div class="d-flex justify-content-center align-items-center gap-2">
-        <i class="bi bi-tools fs-3 fs-sm-4 text-white"></i>
-        <h5 class="mb-0 fw-semibold fs-5 fs-sm-6">Historial de Mantenimientos</h5>
-      </div>
+        <!-- HEADER -->
+        <div class="card-header text-white py-3" style="background-color: #000000; 
+    border-radius: 12px; 
+    box-shadow: 0 4px 6px rgba(0,0,0,0.25);">
 
-      <button type="button" class="position-absolute top-50 end-0 translate-middle-y me-3 p-2"
-              style="background-color: white; border: none; border-radius: 8px;"
-              (click)="RegresarInicio()">
-        <div class="rounded-circle d-flex align-items-center justify-content-center"
-             style="width: 28px; height: 28px; background-color: white; border: 2px solid black;">
-          ✕
+            <div class="row align-items-center">
+                <!-- Columna icono -->
+                <div class="col-auto">
+                    <i class="bi bi-tools fs-3 fs-sm-4 text-white"></i>
+                </div>
+
+                <!-- Columna título -->
+                <div class="col text-center">
+                    <h5 class="mb-0 fw-semibold fs-5 fs-sm-6"
+                        style="word-break: break-word; overflow-wrap: break-word;">
+                        Historial de Mantenimientos
+                    </h5>
+                </div>
+
+                <!-- Columna botón cerrar -->
+                <div class="col-auto">
+                    <button type="button" class="btn p-2"
+                        style="background-color:white; border-radius:8px; border:2px solid black;"
+                        (click)="RegresarInicio()">
+                        <div class="rounded-circle d-flex align-items-center justify-content-center"
+                            style="width:28px; height:28px; background-color:white;">
+                            ✕
+                        </div>
+                    </button>
+                </div>
+            </div>
         </div>
-      </button>
-    </div>
 
-    <!-- BODY -->
-    <div class="card-body py-2 px-2 px-md-3">
-      <!-- FILA 1: BOTÓN NUEVO Y FILTROS -->
-      <div class="row mb-3">
-        <div class="col-12 col-md-auto d-flex justify-content-center justify-content-md-start mb-2 mb-md-0">
-          <button class="btn btn-success w-100 fs-6 fs-sm-7" style="max-width: 140px;"
-                  (click)="MostrarFormularioCreacion()">
-            <i class="bi bi-plus-square-fill me-1 fs-6 fs-sm-7"></i> Nuevo
-          </button>
-        </div>
 
-        <div class="col-12 col-md d-flex gap-2 justify-content-start flex-wrap">
-          <select class="form-select form-select-sm" [(ngModel)]="filtroAnio" (change)="Filtrar()"
-                  style="max-width: 140px;">
-            <option value="">Año</option>
-            <option *ngFor="let a of anios" [value]="a">{{ a }}</option>
-          </select>
+        <!-- BODY -->
+        <div class="card-body py-2 px-2 px-md-3">
+            <!-- FILA 1: BOTÓN NUEVO Y FILTROS -->
+            <div class="row mb-3">
+                <div class="col-12 col-md-auto d-flex justify-content-center justify-content-md-start mb-2 mb-md-0">
+                    <button class="btn btn-success w-100 fs-6 fs-sm-7" style="max-width: 140px;"
+                        (click)="MostrarFormularioCreacion()">
+                        <i class="bi bi-plus-square-fill me-1 fs-6 fs-sm-7"></i> Nuevo
+                    </button>
+                </div>
 
-          <select class="form-select form-select-sm" [(ngModel)]="filtroMes" (change)="Filtrar()"
-                  style="max-width: 140px;">
-            <option value="">Mes</option>
-            <option *ngFor="let m of meses" [value]="m.value">{{ m.name }}</option>
-          </select>
-        </div>
-      </div>
+                <div class="col-12 col-md d-flex gap-2 justify-content-start flex-wrap">
+                    <select class="form-select form-select-sm" [(ngModel)]="filtroAnio" (change)="Filtrar()"
+                        style="max-width: 140px;">
+                        <option value="">Año</option>
+                        <option *ngFor="let a of anios" [value]="a">{{ a }}</option>
+                    </select>
 
-      <!-- TABLA -->
-<!-- TABLA -->
-<div class="table-responsive">
-  <table class="table mb-0 tabla-limpiada table-fixed table-sm">
-    <thead>
-      <tr>
-        <!-- Fecha: ordenable -->
-        <th class="fs-6 fs-sm-8 th-ordenable" style="min-width: 70px; width: 70px;"
-            (click)="OrdenarPor('FechaMantenimiento')">
-          Fecha
-          <i *ngIf="ColumnaOrden === 'FechaMantenimiento'" class="bi"
-             [ngClass]="OrdenAscendente ? 'bi-caret-up-fill' : 'bi-caret-down-fill'"></i>
-        </th>
-
-        <!-- Responsable: no ordenable -->
-        <th class="fs-6 fs-sm-8" style="min-width: 100px; width: 100px;">
-          Responsable
-        </th>
-
-        
-
-        <!-- Monto: suma -->
-        <th class="fs-6 fs-sm-8" style="min-width: 90px; width: 90px;">
-          Monto
-        </th>
-
-        <!-- Estatus: no ordenable -->
-        <th class="fs-6 fs-sm-8" style="min-width: 90px; width: 90px;">
-          Estatus
-        </th>
-      </tr>
-    </thead>
-
-    <tbody>
-      <tr *ngFor="let m of mantenimientosFiltrados" class="fila-deslizable" [attr.data-id]="m.CodigoMantenimiento"
-          (dblclick)="Editar(m)" (mousedown)="IniciarArrastre($event, m)"
-          (mousemove)="DuranteArrastre($event)" (mouseup)="FinalizarArrastre()"
-          (mouseleave)="FinalizarArrastre()" (touchstart)="IniciarArrastre($event, m)"
-          (touchmove)="DuranteArrastre($event)" (touchend)="FinalizarArrastre()">
-
-        <td colspan="7" class="p-0">
-          <div class="fila-contenido fs-12 fs-sm-8 d-flex">
-            
-            <div class="celda text-truncate" style="width:70px;">
-              {{ m.FechaMantenimiento | date:'dd/MM/yyyy' }}
+                    <select class="form-select form-select-sm" [(ngModel)]="filtroMes" (change)="Filtrar()"
+                        style="max-width: 140px;">
+                        <option value="">Mes</option>
+                        <option *ngFor="let m of meses" [value]="m.value">{{ m.name }}</option>
+                    </select>
+                </div>
             </div>
 
-            <div class="celda text-truncate" style="width:100px; word-break: break-word; overflow-wrap: break-word;">
-              {{ m.Responsable }}
+            <!-- TABLA -->
+            <div class="table-responsive">
+                <table class="table mb-0 tabla-limpiada table-fixed table-sm">
+                    <thead>
+                        <tr>
+                            <!-- Fecha: ordenable -->
+                            <th class="fs-6 fs-sm-8 th-ordenable" style="min-width: 20px; width: 100px;"
+                                (click)="OrdenarPor('FechaMantenimiento')">
+                                Fecha
+                                <i *ngIf="ColumnaOrden === 'FechaMantenimiento'" class="bi"
+                                    [ngClass]="OrdenAscendente ? 'bi-caret-up-fill' : 'bi-caret-down-fill'"></i>
+                            </th>
+
+                            <!-- Responsable: no ordenable -->
+                            <th class="fs-6 fs-sm-8" style="min-width: 100px; width: 100px;">
+                                Responsable
+                            </th>
+
+                            <!-- Monto: suma -->
+                            <th class="fs-6 fs-sm-8" style="min-width: 80px; width: 10px;">
+                                Monto
+                            </th>
+
+                            <!-- Estatus: no ordenable -->
+                            <th class="fs-6 fs-sm-8" style="min-width: 90px; width: 90px;">
+                                Estatus
+                            </th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <tr *ngFor="let m of mantenimientosFiltrados" class="fila-deslizable"
+                            [attr.data-id]="m.CodigoMantenimiento" (dblclick)="Editar(m)"
+                            (mousedown)="IniciarArrastre($event, m)" (mousemove)="DuranteArrastre($event)"
+                            (mouseup)="FinalizarArrastre()" (mouseleave)="FinalizarArrastre()"
+                            (touchstart)="IniciarArrastre($event, m)" (touchmove)="DuranteArrastre($event)"
+                            (touchend)="FinalizarArrastre()">
+
+                            <td colspan="4" class="p-0">
+                                <div class="fila-contenido fs-12 fs-sm-8">
+                                    <div class="celda text-truncate" style="width:10px;">
+                                        {{ m.FechaMantenimiento | date:'dd/MM/yyyy' }}
+                                    </div>
+
+                                    <div class="celda text-truncate"
+                                        style="width:10px; word-break: break-word; overflow-wrap: break-word;">
+                                        {{ m.Responsable }}
+                                    </div>
+
+                                    <div class="celda text-truncate" style="width:10px;">
+                                        Q {{ CalcularMonto(m) | number:'1.2-2' }}
+                                    </div>
+
+                                    <div class="celda text-truncate" style="width:90px;">
+                                        <span class="badge estado-cancelado" *ngIf="m.Estado===1">
+                                            <i class="bi bi-check-circle-fill me-1"></i> Cancelado
+                                        </span>
+                                        <span class="badge estado-pendiente" *ngIf="m.Estado===2">
+                                            <i class="bi bi-exclamation-circle-fill me-1"></i> Pendiente
+                                        </span>
+                                    </div>
+                                </div>
+                            </td>
+
+                        </tr>
+                    </tbody>
+                </table>
             </div>
-            <div class="celda text-truncate" style="width:90px;">
-              Q {{ CalcularMonto(m) | number:'1.2-2' }}
+
+
+
+        </div>
+    </div>
+
+    <!-- FORMULARIO CREAR/EDITAR -->
+    <!-- FORMULARIO CREAR/EDITAR -->
+    <div *ngIf="modoCreacion || modoEdicion" class="container-fluid mt-3 px-1">
+        <div class="card shadow-sm w-100" style="max-width: 99%; border-radius: 12px;">
+
+            <!-- HEADER DEL CARD -->
+            <div class="card-header bg-dark text-white position-relative py-3"
+                style="border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.25);">
+                <div class="d-flex justify-content-center align-items-center gap-2">
+                    <i class="bi bi-tools fs-3 text-white"></i>
+                    <h5 class="mb-0 fw-semibold">Datos de mantenimiento</h5>
+                </div>
+
+                <!-- BOTÓN CERRAR -->
+                <button type="button" class="position-absolute top-50 end-0 translate-middle-y me-3 p-2"
+                    style="background-color: white; border: none; border-radius: 8px;" (click)="CancelarFormulario()">
+                    <div class="rounded-circle d-flex align-items-center justify-content-center"
+                        style="width: 28px; height: 28px; background-color: white; border: 2px solid black;">
+                        <span style="color: black; font-weight: bold; font-size: 0.9rem;">✕</span>
+                    </div>
+                </button>
             </div>
 
-            <div class="celda text-truncate" style="width:90px;">
-              <span class="badge estado-cancelado" *ngIf="m.Estado===1">
-                <i class="bi bi-check-circle-fill me-1"></i> Cancelado
-              </span>
-              <span class="badge estado-pendiente" *ngIf="m.Estado===2">
-                <i class="bi bi-exclamation-circle-fill me-1"></i> Pendiente
-              </span>
+            <!-- BODY -->
+            <div class="card-body py-3 px-3">
+                <div class="row g-3">
+
+                    <!-- FILA 1 -->
+                    <div class="col-12 col-md-4 px-md-2">
+                        <label class="form-label fw-bold">
+                            <i class="bi bi-calendar2-event fs-4 text-primary me-1"></i> Fecha de mantenimiento
+                        </label>
+                        <input type="date" class="form-control"
+                            [(ngModel)]="mantenimientoFormulario.FechaMantenimiento">
+                    </div>
+
+                    <div class="col-12 col-md-4 px-md-2">
+                        <label class="form-label fw-bold">
+                            <i class="bi bi-person-fill fs-4 text-black me-1"></i> Responsable
+                        </label>
+                        <input class="form-control" placeholder="Nombre del responsable"
+                            [(ngModel)]="mantenimientoFormulario.Responsable">
+                    </div>
+
+                    <div class="col-12 col-md-4 px-md-2">
+                        <label class="form-label fw-bold">
+                            <i class="bi bi-cash-stack fs-4 text-success me-1"></i> Mano de Obra
+                        </label>
+                        <input type="number" class="form-control" [(ngModel)]="mantenimientoFormulario.ManoObra">
+                    </div>
+
+                    <!-- FILA 2 -->
+                    <div class="col-12 col-md-4 px-md-2">
+                        <label class="form-label fw-bold">
+                            <i class="bi bi-cash-stack fs-4 text-danger me-1"></i> Costo Repuestos
+                        </label>
+                        <input type="number" class="form-control" [(ngModel)]="mantenimientoFormulario.CostoRepuestos">
+                    </div>
+
+                    <div class="col-12 col-md-4 px-md-2">
+                        <label class="form-label fw-bold">
+                            <i class="bi bi-cash-stack fs-4 text-danger me-1"></i> Imprevistos
+                        </label>
+                        <input type="number" class="form-control" [(ngModel)]="mantenimientoFormulario.Imprevistos">
+                    </div>
+
+                    <div class="col-12 col-md-4 px-md-2">
+                        <label class="form-label fw-bold">
+                            <i class="bi bi-exclamation-square fs-4 text-warning me-1"></i> Estatus
+                        </label>
+                        <select class="form-select" [(ngModel)]="mantenimientoFormulario.Estado">
+                            <option [value]="1">Cancelado</option>
+                            <option [value]="2">Pendiente</option>
+                        </select>
+                    </div>
+
+                    <!-- FILA 3: DESCRIPCIÓN OCUPANDO TODA LA FILA -->
+                    <div class="col-12 px-md-2">
+                        <label class="form-label fw-bold">
+                            <i class="bi bi-pencil-square fs-4 text-secondary me-1"></i> Descripción de mantenimiento
+                        </label>
+                        <textarea class="form-control" rows="2" style="resize: none;"
+                            placeholder="Descripción del mantenimiento"
+                            [(ngModel)]="mantenimientoFormulario.DescripcionMantenimiento"></textarea>
+                    </div>
+
+                </div>
+
+                <!-- BOTÓN GUARDAR CENTRADO -->
+                <div class="text-center mt-3">
+                    <button class="btn btn-success btn-lg" (click)="modoCreacion ? Crear() : GuardarEdicion()">
+                        <i class="bi bi-cloud-arrow-down text-white me-1 fs-5"></i> Guardar
+                    </button>
+                </div>
+
             </div>
-
-          </div>
-        </td>
-
-      </tr>
-    </tbody>
-  </table>
-</div>
-
-
-
+        </div>
     </div>
-  </div>
-
-  <!-- FORMULARIO CREAR/EDITAR -->
-<!-- FORMULARIO CREAR/EDITAR -->
-<div *ngIf="modoCreacion || modoEdicion" class="container-fluid mt-3 px-1">
-  <div class="card shadow-sm w-100" style="max-width: 99%; border-radius: 12px;">
-
-    <!-- HEADER DEL CARD -->
-    <div class="card-header bg-dark text-white position-relative py-3"
-         style="border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.25);">
-      <div class="d-flex justify-content-center align-items-center gap-2">
-        <i class="bi bi-tools fs-3 text-white"></i>
-        <h5 class="mb-0 fw-semibold">Datos de mantenimiento</h5>
-      </div>
-
-      <!-- BOTÓN CERRAR -->
-      <button type="button" class="position-absolute top-50 end-0 translate-middle-y me-3 p-2"
-              style="background-color: white; border: none; border-radius: 8px;" (click)="CancelarFormulario()">
-        <div class="rounded-circle d-flex align-items-center justify-content-center"
-             style="width: 28px; height: 28px; background-color: white; border: 2px solid black;">
-          <span style="color: black; font-weight: bold; font-size: 0.9rem;">✕</span>
-        </div>
-      </button>
-    </div>
-
-    <!-- BODY -->
-    <div class="card-body py-3 px-3">
-      <div class="row g-3">
-
-        <!-- FILA 1 -->
-        <div class="col-12 col-md-4 px-md-2">
-          <label class="form-label fw-bold">
-            <i class="bi bi-calendar2-event fs-4 text-primary me-1"></i> Fecha de mantenimiento
-          </label>
-          <input type="date" class="form-control" [(ngModel)]="mantenimientoFormulario.FechaMantenimiento">
-        </div>
-
-        <div class="col-12 col-md-4 px-md-2">
-          <label class="form-label fw-bold">
-            <i class="bi bi-person-fill fs-4 text-black me-1"></i> Responsable
-          </label>
-          <input class="form-control" placeholder="Nombre del responsable"
-                 [(ngModel)]="mantenimientoFormulario.Responsable">
-        </div>
-
-        <div class="col-12 col-md-4 px-md-2">
-          <label class="form-label fw-bold">
-            <i class="bi bi-cash-stack fs-4 text-success me-1"></i> Mano de Obra
-          </label>
-          <input type="number" class="form-control" [(ngModel)]="mantenimientoFormulario.ManoObra">
-        </div>
-
-        <!-- FILA 2 -->
-        <div class="col-12 col-md-4 px-md-2">
-          <label class="form-label fw-bold">
-            <i class="bi bi-cash-stack fs-4 text-danger me-1"></i> Costo Repuestos
-          </label>
-          <input type="number" class="form-control" [(ngModel)]="mantenimientoFormulario.CostoRepuestos">
-        </div>
-
-        <div class="col-12 col-md-4 px-md-2">
-          <label class="form-label fw-bold">
-            <i class="bi bi-cash-stack fs-4 text-danger me-1"></i> Imprevistos
-          </label>
-          <input type="number" class="form-control" [(ngModel)]="mantenimientoFormulario.Imprevistos">
-        </div>
-
-        <div class="col-12 col-md-4 px-md-2">
-          <label class="form-label fw-bold">
-            <i class="bi bi-exclamation-square fs-4 text-warning me-1"></i> Estatus
-          </label>
-          <select class="form-select" [(ngModel)]="mantenimientoFormulario.Estado">
-            <option [value]="1">Cancelado</option>
-            <option [value]="2">Pendiente</option>
-          </select>
-        </div>
-
-        <!-- FILA 3: DESCRIPCIÓN OCUPANDO TODA LA FILA -->
-        <div class="col-12 px-md-2">
-          <label class="form-label fw-bold">
-            <i class="bi bi-pencil-square fs-4 text-secondary me-1"></i> Descripción de mantenimiento
-          </label>
-          <textarea class="form-control" rows="2" style="resize: none;"
-                    placeholder="Descripción del mantenimiento"
-                    [(ngModel)]="mantenimientoFormulario.DescripcionMantenimiento"></textarea>
-        </div>
-
-      </div>
-
-      <!-- BOTÓN GUARDAR CENTRADO -->
-      <div class="text-center mt-3">
-        <button class="btn btn-success btn-lg"
-                (click)="modoCreacion ? Crear() : GuardarEdicion()">
-          <i class="bi bi-cloud-arrow-down text-white me-1 fs-5"></i> Guardar
-        </button>
-      </div>
-
-    </div>
-  </div>
-</div>
 </div>
 
 <!-- MODAL DE CONFIRMACIÓN ELIMINAR MANTENIMIENTO -->
 <div *ngIf="mensajeEliminarVisible" class="modal-backdrop fade show"></div>
-<div *ngIf="mensajeEliminarVisible" class="position-fixed top-50 start-50 translate-middle" 
-     style="z-index: 2000; min-width: 320px; max-width: 90%;">
-  <div class="card shadow rounded-3 border-0">
-    
-    <!-- Header -->
-    <div class="card-header bg-warning text-dark fw-bold d-flex justify-content-between align-items-center">
-      Confirmar Eliminación
-      <button type="button" class="btn-close btn-sm" aria-label="Close" (click)="CancelarEliminar()"></button>
-    </div>
+<div *ngIf="mensajeEliminarVisible" class="position-fixed top-50 start-50 translate-middle"
+    style="z-index: 2000; min-width: 320px; max-width: 90%;">
+    <div class="card shadow rounded-3 border-0">
 
-    <!-- Body -->
-    <div class="card-body text-center">
-      <p class="mb-3 fs-6">{{ mensajeEliminarTexto }}</p>
-      <div class="d-flex justify-content-center gap-2">
-        <button type="button" class="btn btn-danger btn-sm d-flex align-items-center gap-1" (click)="ConfirmarEliminar()">
-          <i class="bi bi-trash"></i> Eliminar
-        </button>
-        <button type="button" class="btn btn-secondary btn-sm" (click)="CancelarEliminar()">
-          Cancelar
-        </button>
-      </div>
+        <!-- Header -->
+        <div class="card-header bg-warning text-dark fw-bold d-flex justify-content-between align-items-center">
+            Confirmar Eliminación
+            <button type="button" class="btn-close btn-sm" aria-label="Close" (click)="CancelarEliminar()"></button>
+        </div>
+
+        <!-- Body -->
+        <div class="card-body text-center">
+            <p class="mb-3 fs-6">{{ mensajeEliminarTexto }}</p>
+            <div class="d-flex justify-content-center gap-2">
+                <button type="button" class="btn btn-danger btn-sm d-flex align-items-center gap-1"
+                    (click)="ConfirmarEliminar()">
+                    <i class="bi bi-trash"></i> Eliminar
+                </button>
+                <button type="button" class="btn btn-secondary btn-sm" (click)="CancelarEliminar()">
+                    Cancelar
+                </button>
+            </div>
+        </div>
+
     </div>
-    
-  </div>
 </div>
-

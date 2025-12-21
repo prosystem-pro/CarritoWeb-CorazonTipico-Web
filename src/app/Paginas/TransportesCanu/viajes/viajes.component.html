@@ -7,21 +7,36 @@
         style="max-width: 99%; border-radius: 12px;">
 
         <!-- HEADER -->
-        <div class="card-header text-white position-relative py-3" style="background-color: #000000; 
-            border-radius: 12px; 
-            box-shadow: 0 4px 6px rgba(0,0,0,0.25);">
-            <div class="d-flex justify-content-center align-items-center gap-2">
-                <i class="bi bi-truck fs-3 fs-sm-4 text-white"></i>
-                <h5 class="mb-0 fw-semibold fs-5 fs-sm-6">Historial de viajes</h5>
-            </div>
+        <div class="card-header text-white py-3" style="background-color: #000000; 
+    border-radius: 12px; 
+    box-shadow: 0 4px 6px rgba(0,0,0,0.25);">
 
-            <button type="button" class="position-absolute top-50 end-0 translate-middle-y me-3 p-2"
-                style="background-color: white; border: none; border-radius: 8px;" (click)="RegresarInicio()">
-                <div class="rounded-circle d-flex align-items-center justify-content-center"
-                    style="width: 28px; height: 28px; background-color: white; border: 2px solid black;">
-                    ✕
+            <div class="row align-items-center">
+                <!-- Columna icono -->
+                <div class="col-auto">
+                    <i class="bi bi-truck fs-3 fs-sm-4 text-white"></i>
                 </div>
-            </button>
+
+                <!-- Columna título -->
+                <div class="col text-center">
+                    <h5 class="mb-0 fw-semibold fs-5 fs-sm-6"
+                        style="word-break: break-word; overflow-wrap: break-word;">
+                        Historial de viajes
+                    </h5>
+                </div>
+
+                <!-- Columna botón cerrar -->
+                <div class="col-auto">
+                    <button type="button" class="btn p-2"
+                        style="background-color:white; border-radius:8px; border:2px solid black;"
+                        (click)="RegresarInicio()">
+                        <div class="rounded-circle d-flex align-items-center justify-content-center"
+                            style="width:28px; height:28px; background-color:white;">
+                            ✕
+                        </div>
+                    </button>
+                </div>
+            </div>
         </div>
 
         <!-- BODY -->
@@ -35,19 +50,33 @@
                     </button>
                 </div>
 
-                <div class="col-12 col-md d-flex gap-2 justify-content-start flex-wrap">
-                    <select class="form-select form-select-sm" [(ngModel)]="filtroAnio" (change)="Filtrar()"
-                        style="max-width: 140px;">
-                        <option value="">Año</option>
-                        <option *ngFor="let a of anios" [value]="a">{{ a }}</option>
-                    </select>
+<div class="col-12 col-md d-flex gap-2 justify-content-start flex-wrap">
+ <select
+  class="form-select form-select-sm"
+  [(ngModel)]="filtroAnio"
+  (change)="Filtrar()"
+  style="max-width: 140px;"
+>
+  <option [ngValue]="''">Año</option>
+  <option *ngFor="let a of anios" [ngValue]="a">
+    {{ a }}
+  </option>
+</select>
 
-                    <select class="form-select form-select-sm" [(ngModel)]="filtroMes" (change)="Filtrar()"
-                        style="max-width: 140px;">
-                        <option value="">Mes</option>
-                        <option *ngFor="let m of meses" [value]="m.value">{{ m.name }}</option>
-                    </select>
-                </div>
+<select
+  class="form-select form-select-sm"
+  [(ngModel)]="filtroMes"
+  (change)="Filtrar()"
+  style="max-width: 140px;"
+>
+  <option value="">Mes</option>
+  <option *ngFor="let m of meses" [value]="m.value">
+    {{ m.name }}
+  </option>
+</select>
+
+</div>
+
             </div>
             <!-- TABLA -->
             <div class="table-responsive">
