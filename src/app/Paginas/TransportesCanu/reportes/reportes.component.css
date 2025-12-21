@@ -1,30 +1,50 @@
-.card-flex {
+/* RESPONSIVE CARD */
+.responsive-card {
+  min-height: 260px;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  height: auto; /* flexible */
-  min-height: 180px;
+}
+
+@media (max-width: 991.98px) {
+  .responsive-card {
+    min-height: 220px;
+  }
 }
 
 @media (max-width: 767.98px) {
-  .card-flex { min-height: 200px; } /* más espacio para móviles */
+  .responsive-card {
+    min-height: 180px;
+    width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
+/* FLEX CARD: espacio uniforme entre texto y gráfico */
+.card-flex {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly; /* Distribuye espacio vertical equilibrado */
+  align-items: center;
+  height: 100%;
 }
 
 /* CONTAINER SVG */
 .chart-container {
   width: 100%;
-  max-height: 50%;
+  max-height: 120px;
   display: flex;
   align-items: center;
   justify-content: center;
+  margin-top: 0.2rem;
 }
 
 /* CIRCULAR CHART */
 .circular-chart {
   display: block;
   width: 60%;
+  max-width: 100px;
   height: auto;
-  max-height: 100%;
   margin: auto;
   --circle-color: #0d6efd;
 }
@@ -49,7 +69,18 @@
   text-anchor: middle;
 }
 
-/* ANIMACION */
+/* ANIMACIÓN */
 @keyframes progress {
   0% { stroke-dasharray: 0, 100; }
+}
+
+/* MEDIA QUERIES */
+@media (max-width: 991.98px) {
+  .chart-container { max-height: 100px; }
+  .circular-chart { width: 50%; max-width: 80px; }
+}
+
+@media (max-width: 767.98px) {
+  .chart-container { max-height: 80px; }
+  .circular-chart { width: 40%; max-width: 60px; }
 }
