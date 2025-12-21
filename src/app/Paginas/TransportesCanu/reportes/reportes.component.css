@@ -1,86 +1,71 @@
 /* RESPONSIVE CARD */
 .responsive-card {
-  min-height: 260px;
-  display: flex;
-  flex-direction: column;
+  height: 260px; /* Desktop default */
 }
 
 @media (max-width: 991.98px) {
   .responsive-card {
-    min-height: 220px;
+    height: 220px; /* Tablet más compacto */
   }
 }
 
 @media (max-width: 767.98px) {
   .responsive-card {
-    min-height: 180px;
-    width: 90%;
-    margin-left: auto;
+    height: 140px;       /* Móvil más pequeño */
+    width: 90%;          /* Casi cuadrado */
+    margin-left: auto;    /* Centrado horizontal */
     margin-right: auto;
   }
 }
 
-/* FLEX CARD: espacio uniforme entre texto y gráfico */
-.card-flex {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-evenly; /* Distribuye espacio vertical equilibrado */
-  align-items: center;
-  height: 100%;
-}
-
-/* CONTAINER SVG */
-.chart-container {
+/* CONTENEDOR DE LA GRAFICA ANIMADA */
+.animated-chart {
+  height: 50%;
   width: 100%;
-  max-height: 120px;
   display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-top: 0.2rem;
+  align-items: flex-end;
+  justify-content: space-between;
+  padding: 10px;
+  gap: 2%;
+  overflow: hidden;
 }
 
-/* CIRCULAR CHART */
-.circular-chart {
+/* CADA PICO */
+.animated-chart span {
   display: block;
-  width: 60%;
-  max-width: 100px;
-  height: auto;
-  margin: auto;
-  --circle-color: #0d6efd;
+  width: 8%;
+  border-radius: 6px 6px 0 0;
+  animation: wave 2.5s ease-in-out infinite;
 }
 
-.circular-chart .circle-bg {
-  fill: none;
-  stroke: #eee;
-  stroke-width: 3.8;
+/* COLORES */
+.chart-blue span {
+  background: linear-gradient(to top, #0d6efd, #6ea8fe);
+}
+.chart-red span {
+  background: linear-gradient(to top, #dc3545, #f199a0);
+}
+.chart-green span {
+  background: linear-gradient(to top, #198754, #7dd3a5);
 }
 
-.circular-chart .circle {
-  fill: none;
-  stroke-width: 3.8;
-  stroke-linecap: round;
-  stroke: var(--circle-color, #0d6efd);
-  animation: progress 1s ease-out forwards;
+/* ALTURAS DIFERENTES PARA SIMULAR PICO */
+.animated-chart span:nth-child(1) { height: 40%; animation-delay: 0s; }
+.animated-chart span:nth-child(2) { height: 65%; animation-delay: 0.2s; }
+.animated-chart span:nth-child(3) { height: 50%; animation-delay: 0.4s; }
+.animated-chart span:nth-child(4) { height: 75%; animation-delay: 0.6s; }
+.animated-chart span:nth-child(5) { height: 55%; animation-delay:0.8s; }
+.animated-chart span:nth-child(6) { height: 60%; animation-delay: 1s; }
+.animated-chart span:nth-child(7) { height: 45%; animation-delay: 1.2s; }
+.animated-chart span:nth-child(8) { height: 70%; animation-delay: 1.4s; }
+.animated-chart span:nth-child(9) { height: 50%; animation-delay: 1.6s; }
+.animated-chart span:nth-child(10){ height: 65%; animation-delay: 1.8s; }
+
+/* ANIMACION WAVE */
+@keyframes wave {
+  0%, 100% { transform: scaleY(1); }
+  50% { transform: scaleY(1.3); }
 }
 
-.circular-chart .percentage {
-  fill: #333;
-  font-size: 0.5em;
-  text-anchor: middle;
-}
 
-/* ANIMACIÓN */
-@keyframes progress {
-  0% { stroke-dasharray: 0, 100; }
-}
 
-/* MEDIA QUERIES */
-@media (max-width: 991.98px) {
-  .chart-container { max-height: 100px; }
-  .circular-chart { width: 50%; max-width: 80px; }
-}
-
-@media (max-width: 767.98px) {
-  .chart-container { max-height: 80px; }
-  .circular-chart { width: 40%; max-width: 60px; }
-}
