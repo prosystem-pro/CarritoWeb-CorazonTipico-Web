@@ -41,21 +41,27 @@ export class ReportesComponent implements OnInit {
     private router: Router
   ) { }
 
-  ngOnInit(): void {
-    const hoy = new Date();
-    const anioActual = hoy.getFullYear();
-    const mesActual = (hoy.getMonth() + 1).toString().padStart(2, '0');
+ngOnInit(): void {
+  const hoy = new Date();
+  const anioActual = hoy.getFullYear();
+  const mesActual = (hoy.getMonth() + 1).toString().padStart(2, '0');
 
-    // Años: actual y dos anteriores
-    this.anios = [anioActual, anioActual - 1, anioActual - 2];
+  // Año siguiente + actual + dos anteriores
+  this.anios = [
+    anioActual + 1, // 2026
+    anioActual,     // 2025
+    anioActual - 1, // 2024
+    anioActual - 2  // 2023
+  ];
 
-    // Valores por defecto
-    this.filtroAnio = anioActual;
-    this.filtroMes = mesActual;
+  // Valores por defecto
+  this.filtroAnio = anioActual;
+  this.filtroMes = mesActual;
 
-    this.actualizarNombreMes();
-    this.cargarReporte();
-  }
+  this.actualizarNombreMes();
+  this.cargarReporte();
+}
+
   GenerarLinea(data: number[]): string {
     const max = Math.max(...data, 1);
     const points = data.map((v, i) => `${(i / (data.length - 1)) * 100},${100 - (v / max) * 100}`).join(' ');

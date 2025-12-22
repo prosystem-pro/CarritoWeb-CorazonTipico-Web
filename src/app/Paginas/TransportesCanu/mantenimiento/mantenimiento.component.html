@@ -43,28 +43,30 @@
         <!-- BODY -->
         <div class="card-body py-2 px-2 px-md-3">
             <!-- FILA 1: BOTÓN NUEVO Y FILTROS -->
-            <div class="row mb-3">
-                <div class="col-12 col-md-auto d-flex justify-content-center justify-content-md-start mb-2 mb-md-0">
-                    <button class="btn btn-success w-100 fs-6 fs-sm-7" style="max-width: 140px;"
-                        (click)="MostrarFormularioCreacion()">
-                        <i class="bi bi-plus-square-fill me-1 fs-6 fs-sm-7"></i> Nuevo
-                    </button>
-                </div>
+<!-- FILA 1: BOTÓN NUEVO Y FILTROS -->
+<div class="row mb-3">
+    <div class="col-12 col-md-auto d-flex justify-content-center justify-content-md-start mb-2 mb-md-0">
+        <button class="btn btn-success w-100 fs-6 fs-sm-7" style="max-width: 140px;"
+            (click)="MostrarFormularioCreacion()">
+            <i class="bi bi-plus-square-fill me-1 fs-6 fs-sm-7"></i> Nuevo
+        </button>
+    </div>
 
-                <div class="col-12 col-md d-flex gap-2 justify-content-start flex-wrap">
-                    <select class="form-select form-select-sm" [(ngModel)]="filtroAnio" (change)="Filtrar()"
-                        style="max-width: 140px;">
-                        <option value="">Año</option>
-                        <option *ngFor="let a of anios" [value]="a">{{ a }}</option>
-                    </select>
+    <div class="col-12 col-md d-flex gap-2 justify-content-start flex-wrap">
+        <select class="form-select form-select-sm" [(ngModel)]="filtroAnio" (change)="Filtrar()"
+            style="max-width: 140px;">
+            <option value="">Año</option>
+            <option *ngFor="let a of anios" [value]="a">{{ a }}</option>
+        </select>
 
-                    <select class="form-select form-select-sm" [(ngModel)]="filtroMes" (change)="Filtrar()"
-                        style="max-width: 140px;">
-                        <option value="">Mes</option>
-                        <option *ngFor="let m of meses" [value]="m.value">{{ m.name }}</option>
-                    </select>
-                </div>
-            </div>
+        <select class="form-select form-select-sm" [(ngModel)]="filtroMes" (change)="Filtrar()"
+            style="max-width: 140px;">
+            <option value="">Mes</option>
+            <option *ngFor="let m of meses" [value]="m.value">{{ m.name }}</option>
+        </select>
+    </div>
+</div>
+
 
             <!-- TABLA -->
             <div class="table-responsive">

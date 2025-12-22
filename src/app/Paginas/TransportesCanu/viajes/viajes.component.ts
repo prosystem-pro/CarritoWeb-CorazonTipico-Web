@@ -58,17 +58,18 @@ export class ViajesComponent implements OnInit {
     { value: '11', name: 'Noviembre' }, { value: '12', name: 'Diciembre' }
   ];
 
-  constructor(private viajesServicio: ViajesServicio, private router: Router) {}
+  constructor(private viajesServicio: ViajesServicio, private router: Router) { }
 
   ngOnInit(): void {
     const hoy = new Date();
     const anioActual = hoy.getFullYear();
 
-    // Año actual y dos anteriores (FIJO, NO SE SOBREESCRIBE)
+    // Año siguiente + actual + dos anteriores
     this.anios = [
-      anioActual,
-      anioActual - 1,
-      anioActual - 2
+      anioActual + 1, // 2026
+      anioActual,     // 2025
+      anioActual - 1, // 2024
+      anioActual - 2  // 2023
     ];
 
     // Valores iniciales
@@ -102,6 +103,7 @@ export class ViajesComponent implements OnInit {
     this.cargando = true;
     this.viajesServicio.Listado().subscribe({
       next: resp => {
+        console.log('Viajes', resp)
         this.viajes = resp.data || [];
         this.Filtrar();
         this.cargando = false;
@@ -110,29 +112,39 @@ export class ViajesComponent implements OnInit {
     });
   }
 
-  /* ======================
-     FILTROS
-  ====================== */
-  Filtrar() {
-    if (!this.filtroAnio || !this.filtroMes) {
-      this.viajesFiltrados = [...this.viajes];
-      return;
+/* ======================
+   FILTROS
+====================== */
+Filtrar() {
+
+  this.viajesFiltrados = this.viajes.filter(v => {
+
+    if (!v.FechaViaje) return false;
+
+    // Asumimos formato YYYY-MM-DD o YYYY-MM-DDTHH:mm:ss
+    const fecha = v.FechaViaje.substring(0, 10);
+    const anio = fecha.substring(0, 4);
+    const mes  = fecha.substring(5, 7);
+
+    // Filtro por año
+    if (this.filtroAnio && anio !== this.filtroAnio.toString()) {
+      return false;
     }
 
-    this.viajesFiltrados = this.viajes.filter(v => {
-      const f = new Date(v.FechaViaje);
-      return (
-        f.getFullYear() === this.filtroAnio &&
-        (f.getMonth() + 1).toString().padStart(2, '0') === this.filtroMes
-      );
-    });
-  }
+    // Filtro por mes
+    if (this.filtroMes && mes !== this.filtroMes) {
+      return false;
+    }
 
-  LimpiarFiltros() {
-    this.filtroAnio = '';
-    this.filtroMes = '';
-    this.viajesFiltrados = [...this.viajes];
-  }
+    return true;
+  });
+}
+
+LimpiarFiltros() {
+  this.filtroAnio = '';
+  this.filtroMes = '';
+  this.viajesFiltrados = [...this.viajes];
+}
 
   /* ======================
      CREAR / EDITAR

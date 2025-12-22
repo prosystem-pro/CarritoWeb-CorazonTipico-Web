@@ -50,32 +50,24 @@
                     </button>
                 </div>
 
-<div class="col-12 col-md d-flex gap-2 justify-content-start flex-wrap">
- <select
-  class="form-select form-select-sm"
-  [(ngModel)]="filtroAnio"
-  (change)="Filtrar()"
-  style="max-width: 140px;"
->
-  <option [ngValue]="''">Año</option>
-  <option *ngFor="let a of anios" [ngValue]="a">
-    {{ a }}
-  </option>
-</select>
+                <div class="col-12 col-md d-flex gap-2 justify-content-start flex-wrap">
+                    <select class="form-select form-select-sm" [(ngModel)]="filtroAnio" (change)="Filtrar()"
+                        style="max-width: 140px;">
+                        <option [ngValue]="''">Año</option>
+                        <option *ngFor="let a of anios" [ngValue]="a">
+                            {{ a }}
+                        </option>
+                    </select>
 
-<select
-  class="form-select form-select-sm"
-  [(ngModel)]="filtroMes"
-  (change)="Filtrar()"
-  style="max-width: 140px;"
->
-  <option value="">Mes</option>
-  <option *ngFor="let m of meses" [value]="m.value">
-    {{ m.name }}
-  </option>
-</select>
+                    <select class="form-select form-select-sm" [(ngModel)]="filtroMes" (change)="Filtrar()"
+                        style="max-width: 140px;">
+                        <option value="">Mes</option>
+                        <option *ngFor="let m of meses" [value]="m.value">
+                            {{ m.name }}
+                        </option>
+                    </select>
 
-</div>
+                </div>
 
             </div>
             <!-- TABLA -->
@@ -156,112 +148,127 @@
     </div>
 
     <!-- FORMULARIO crear-->
-    <div *ngIf="modoCreacion || modoEdicion" class="container-fluid mt-3 px-1">
-        <div class="card shadow-sm w-100" style="max-width: 99%; border-radius: 12px;">
+<!-- FORMULARIO crear/editar -->
+<div *ngIf="modoCreacion || modoEdicion" class="container-fluid mt-3 px-1">
+  <div class="card shadow-sm w-100" style="max-width: 99%; border-radius: 12px;">
 
-            <!-- HEADER DEL CARD -->
-            <div class="card-header bg-dark text-white position-relative py-3" style="border-top-left-radius: 12px; border-top-right-radius: 12px; 
-                border-bottom-left-radius: 12px; border-bottom-right-radius: 12px;
-                box-shadow: 0 4px 6px rgba(0,0,0,0.25);">
-                <div class="d-flex justify-content-center align-items-center gap-2">
-                    <i class="bi bi-truck fs-3 text-white"></i>
-                    <h5 class="mb-0 fw-semibold">Datos del viaje</h5>
-                </div>
+    <!-- HEADER DEL CARD -->
+    <div class="card-header bg-dark text-white position-relative py-3" 
+         style="border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.25);">
+      <div class="d-flex justify-content-center align-items-center gap-2">
+        <i class="bi bi-truck fs-3 text-white"></i>
+        <h5 class="mb-0 fw-semibold">Datos del viaje</h5>
+      </div>
 
-                <!-- BOTÓN CERRAR -->
-                <button type="button" class="position-absolute top-50 end-0 translate-middle-y me-3 p-2"
-                    style="background-color: white; border: none; border-radius: 8px;" (click)="CancelarFormulario()">
-                    <div class="rounded-circle d-flex align-items-center justify-content-center"
-                        style="width: 28px; height: 28px; background-color: white; border: 2px solid black;">
-                        <span style="color: black; font-weight: bold; font-size: 0.9rem;">✕</span>
-                    </div>
-                </button>
-            </div>
-
-            <!-- BODY -->
-            <div class="card-body py-3 px-3">
-
-                <div class="row g-3">
-
-                    <!-- FILA 1 -->
-                    <div class="col-12 col-md-4 px-md-2">
-                        <label class="form-label fw-bold">
-                            <i class="bi bi-calendar2-event fs-4 text-primary me-1"></i> Fecha del viaje
-                        </label>
-                        <input type="date" class="form-control" [(ngModel)]="viajeFormulario.FechaViaje">
-                    </div>
-
-                    <div class="col-12 col-md-4 px-md-2">
-                        <label class="form-label fw-bold">
-                            <i class="bi bi-person-fill fs-4 text-black me-1"></i> Cliente
-                        </label>
-                        <input class="form-control" placeholder="Nombre del cliente"
-                            [(ngModel)]="viajeFormulario.Cliente">
-                    </div>
-
-                    <div class="col-12 col-md-4 px-md-2">
-                        <label class="form-label fw-bold">
-                            <i class="bi bi-cash-stack fs-4 text-success me-1"></i> Precio del viaje
-                        </label>
-                        <input type="number" class="form-control" [(ngModel)]="viajeFormulario.PrecioViaje">
-                    </div>
-
-                    <!-- FILA 2 -->
-                    <div class="col-12 col-md-4 px-md-2">
-                        <label class="form-label fw-bold">
-                            <i class="bi bi-cash-stack fs-4 text-danger me-1"></i> Pago al chofer
-                        </label>
-                        <input type="number" class="form-control" [(ngModel)]="viajeFormulario.PagoChofer">
-                    </div>
-
-                    <div class="col-12 col-md-4 px-md-2">
-                        <label class="form-label fw-bold">
-                            <i class="bi bi-cash-stack fs-4 text-danger me-1"></i> Pago combustible
-                        </label>
-                        <input type="number" class="form-control" [(ngModel)]="viajeFormulario.PagoCombustible">
-                    </div>
-
-                    <div class="col-12 col-md-4 px-md-2">
-                        <label class="form-label fw-bold">
-                            <i class="bi bi-cash-stack fs-4 text-danger me-1"></i> Imprevistos
-                        </label>
-                        <input type="number" class="form-control" [(ngModel)]="viajeFormulario.Imprevistos">
-                    </div>
-
-                    <!-- FILA 3 -->
-                    <div class="col-12 col-md-6 px-md-2">
-                        <label class="form-label fw-bold">
-                            <i class="bi bi-exclamation-square fs-4 text-warning me-1"></i> Estatus
-                        </label>
-                        <select class="form-select" [(ngModel)]="viajeFormulario.Estado">
-                            <option [value]="1">Cancelado</option>
-                            <option [value]="2">Agendado</option>
-                            <option [value]="3">Pendiente</option>
-                        </select>
-                    </div>
-
-                    <div class="col-12 col-md-6 px-md-2">
-                        <label class="form-label fw-bold">
-                            <i class="bi bi-pencil-square fs-4 text-secondary me-1"></i> Descripción del viaje
-                        </label>
-                        <textarea class="form-control" rows="1" style="resize: none;"
-                            placeholder="Descripción del viaje" [(ngModel)]="viajeFormulario.DescripcionViaje">
-          </textarea>
-                    </div>
-
-                </div>
-
-                <!-- BOTÓN GUARDAR CENTRADO -->
-                <div class="text-center mt-3">
-                    <button class="btn btn-success btn-lg" (click)="modoCreacion ? Crear() : GuardarEdicion()">
-                        <i class="bi bi-cloud-arrow-down text-white me-1 fs-5"></i> Guardar
-                    </button>
-                </div>
-
-            </div>
-
+      <!-- BOTÓN CERRAR -->
+      <button type="button" class="position-absolute top-50 end-0 translate-middle-y me-3 p-2"
+              style="background-color: white; border: none; border-radius: 8px;" 
+              (click)="CancelarFormulario()">
+        <div class="rounded-circle d-flex align-items-center justify-content-center"
+             style="width: 28px; height: 28px; background-color: white; border: 2px solid black;">
+          <span style="color: black; font-weight: bold; font-size: 0.9rem;">✕</span>
         </div>
+      </button>
     </div>
+
+    <!-- BODY -->
+    <div class="card-body py-3 px-3">
+      <div class="row g-3">
+
+        <!-- FILA 1 -->
+        <div class="col-12 col-md-4 px-md-2">
+          <label class="form-label fw-bold">
+            <i class="bi bi-calendar2-event fs-4 text-primary me-1"></i> Fecha del viaje
+          </label>
+          <input type="date" class="form-control" [(ngModel)]="viajeFormulario.FechaViaje">
+        </div>
+
+        <div class="col-12 col-md-4 px-md-2">
+          <label class="form-label fw-bold">
+            <i class="bi bi-person-fill fs-4 text-black me-1"></i> Cliente
+          </label>
+          <input class="form-control" placeholder="Nombre del cliente"
+                 [(ngModel)]="viajeFormulario.Cliente">
+        </div>
+
+        <div class="col-12 col-md-4 px-md-2">
+          <label class="form-label fw-bold">
+            <i class="bi bi-cash-stack fs-4 text-success me-1"></i> Precio del viaje
+          </label>
+          <input type="text" class="form-control" 
+                 inputmode="decimal" 
+                 pattern="[0-9]*([.][0-9]{0,2})?"
+                 [(ngModel)]="viajeFormulario.PrecioViaje">
+        </div>
+
+        <!-- FILA 2 -->
+        <div class="col-12 col-md-4 px-md-2">
+          <label class="form-label fw-bold">
+            <i class="bi bi-cash-stack fs-4 text-danger me-1"></i> Pago al chofer
+          </label>
+          <input type="text" class="form-control" 
+                 inputmode="decimal" 
+                 pattern="[0-9]*([.][0-9]{0,2})?"
+                 [(ngModel)]="viajeFormulario.PagoChofer">
+        </div>
+
+        <div class="col-12 col-md-4 px-md-2">
+          <label class="form-label fw-bold">
+            <i class="bi bi-cash-stack fs-4 text-danger me-1"></i> Pago combustible
+          </label>
+          <input type="text" class="form-control" 
+                 inputmode="decimal" 
+                 pattern="[0-9]*([.][0-9]{0,2})?"
+                 [(ngModel)]="viajeFormulario.PagoCombustible">
+        </div>
+
+        <div class="col-12 col-md-4 px-md-2">
+          <label class="form-label fw-bold">
+            <i class="bi bi-cash-stack fs-4 text-danger me-1"></i> Imprevistos
+          </label>
+          <input type="text" class="form-control" 
+                 inputmode="decimal" 
+                 pattern="[0-9]*([.][0-9]{0,2})?"
+                 [(ngModel)]="viajeFormulario.Imprevistos">
+        </div>
+
+        <!-- FILA 3 -->
+        <div class="col-12 col-md-6 px-md-2">
+          <label class="form-label fw-bold">
+            <i class="bi bi-exclamation-square fs-4 text-warning me-1"></i> Estatus
+          </label>
+          <select class="form-select" [(ngModel)]="viajeFormulario.Estado">
+            <option [value]="1">Cancelado</option>
+            <option [value]="2">Agendado</option>
+            <option [value]="3">Pendiente</option>
+          </select>
+        </div>
+
+        <div class="col-12 col-md-6 px-md-2">
+          <label class="form-label fw-bold">
+            <i class="bi bi-pencil-square fs-4 text-secondary me-1"></i> Descripción del viaje
+          </label>
+          <textarea class="form-control" rows="1" style="resize: none;"
+                    placeholder="Descripción del viaje" [(ngModel)]="viajeFormulario.DescripcionViaje">
+          </textarea>
+        </div>
+
+      </div>
+
+      <!-- BOTÓN GUARDAR CENTRADO -->
+      <div class="text-center mt-3">
+        <button class="btn btn-success btn-lg" 
+                (click)="modoCreacion ? Crear() : GuardarEdicion()">
+          <i class="bi bi-cloud-arrow-down text-white me-1 fs-5"></i> Guardar
+        </button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+
     <!-- MODAL DE CONFIRMACIÓN ELIMINAR -->
     <div *ngIf="mensajeEliminarVisible" class="modal-backdrop fade show"></div>
     <div *ngIf="mensajeEliminarVisible" class="position-fixed top-50 start-50 translate-middle"
@@ -290,7 +297,4 @@
 
         </div>
     </div>
-
-
-
 </div>

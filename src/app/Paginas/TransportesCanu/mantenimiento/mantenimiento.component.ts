@@ -59,19 +59,27 @@ export class MantenimientoComponent implements OnInit {
     private router: Router
   ) {}
 
-  ngOnInit(): void {
-    const hoy = new Date();
-    const anioActual = hoy.getFullYear();
+ngOnInit(): void {
+  const hoy = new Date();
+  const anioActual = hoy.getFullYear();
+  const mesActual = (hoy.getMonth() + 1).toString().padStart(2, '0'); // 01-12
 
-    // SOLO: año actual y dos anteriores
-    this.anios = [
-      anioActual,
-      anioActual - 1,
-      anioActual - 2
-    ];
+  // Año siguiente + actual + dos anteriores
+  this.anios = [
+    anioActual + 1,
+    anioActual,
+    anioActual - 1,
+    anioActual - 2
+  ];
 
-    this.Listado();
-  }
+  // Selección inicial de filtros: año y mes actual
+  this.filtroAnio = anioActual.toString();
+  this.filtroMes = mesActual;
+
+  // Traer listado y aplicar filtros
+  this.Listado();
+}
+
 
   /* ======================
      FUNCIONES AUXILIARES
