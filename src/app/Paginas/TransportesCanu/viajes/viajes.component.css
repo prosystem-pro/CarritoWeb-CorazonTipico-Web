@@ -107,9 +107,9 @@
     user-select: none;
 }
 
-/* ======================
-   ESTILOS MÓVILES
-   ====================== */
+
+/* 
+
 @media (min-width: 400px) and (max-width: 576px) {
 
     .tabla-limpiada th,
@@ -117,7 +117,6 @@
     .fila-contenido,
     .badge {
         font-size: 0.52rem !important;
-        /* más pequeño solo en este rango */
     }
 }
 
@@ -128,7 +127,6 @@
     .fila-contenido,
     .badge {
         font-size: 0.4rem !important;
-        /* más pequeño solo en este rango */
     }
 }
 
@@ -139,6 +137,6 @@
     .fila-contenido,
     .badge {
         font-size: 0.3rem !important;
-        /* más pequeño solo en este rango */
+
     }
-}
+} */
