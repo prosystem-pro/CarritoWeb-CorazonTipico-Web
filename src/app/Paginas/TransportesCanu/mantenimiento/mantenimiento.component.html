@@ -67,75 +67,85 @@
     </div>
 </div>
 
+<!-- TABLA -->
+<div class="table-responsive">
+    <table class="table table-sm mb-0 tabla-limpiada">
+        <thead>
+            <tr>
+                <!-- Fecha -->
+                <th class="fs-6 fs-sm-8 text-nowrap"
+                    (click)="OrdenarPor('FechaMantenimiento')">
+                    Fecha
+                    <i *ngIf="ColumnaOrden === 'FechaMantenimiento'" class="bi"
+                       [ngClass]="OrdenAscendente ? 'bi-caret-up-fill' : 'bi-caret-down-fill'"></i>
+                </th>
 
-            <!-- TABLA -->
-            <div class="table-responsive">
-                <table class="table mb-0 tabla-limpiada table-fixed table-sm">
-                    <thead>
-                        <tr>
-                            <!-- Fecha: ordenable -->
-                            <th class="fs-6 fs-sm-8 th-ordenable" style="min-width: 20px; width: 100px;"
-                                (click)="OrdenarPor('FechaMantenimiento')">
-                                Fecha
-                                <i *ngIf="ColumnaOrden === 'FechaMantenimiento'" class="bi"
-                                    [ngClass]="OrdenAscendente ? 'bi-caret-up-fill' : 'bi-caret-down-fill'"></i>
-                            </th>
+                <!-- Responsable -->
+                <th class="fs-6 fs-sm-8">
+                    Responsable
+                </th>
 
-                            <!-- Responsable: no ordenable -->
-                            <th class="fs-6 fs-sm-8" style="min-width: 100px; width: 100px;">
-                                Responsable
-                            </th>
+                <!-- Monto -->
+                <th class="fs-6 fs-sm-8 text-nowrap text-end">
+                    Monto
+                </th>
 
-                            <!-- Monto: suma -->
-                            <th class="fs-6 fs-sm-8" style="min-width: 80px; width: 10px;">
-                                Monto
-                            </th>
+                <!-- Estatus -->
+                <th class="fs-6 fs-sm-8 text-nowrap">
+                    Estatus
+                </th>
+            </tr>
+        </thead>
 
-                            <!-- Estatus: no ordenable -->
-                            <th class="fs-6 fs-sm-8" style="min-width: 90px; width: 90px;">
-                                Estatus
-                            </th>
-                        </tr>
-                    </thead>
+        <tbody>
+            <tr *ngFor="let m of mantenimientosFiltrados"
+                class="fila-deslizable"
+                [attr.data-id]="m.CodigoMantenimiento"
+                (dblclick)="Editar(m)"
+                (mousedown)="IniciarArrastre($event, m)"
+                (mousemove)="DuranteArrastre($event)"
+                (mouseup)="FinalizarArrastre()"
+                (mouseleave)="FinalizarArrastre()"
+                (touchstart)="IniciarArrastre($event, m)"
+                (touchmove)="DuranteArrastre($event)"
+                (touchend)="FinalizarArrastre()">
 
-                    <tbody>
-                        <tr *ngFor="let m of mantenimientosFiltrados" class="fila-deslizable"
-                            [attr.data-id]="m.CodigoMantenimiento" (dblclick)="Editar(m)"
-                            (mousedown)="IniciarArrastre($event, m)" (mousemove)="DuranteArrastre($event)"
-                            (mouseup)="FinalizarArrastre()" (mouseleave)="FinalizarArrastre()"
-                            (touchstart)="IniciarArrastre($event, m)" (touchmove)="DuranteArrastre($event)"
-                            (touchend)="FinalizarArrastre()">
+                <td colspan="4" class="p-0">
+                    <!-- 👇 MISMA LÓGICA QUE VIAJES -->
+                    <div class="fila-contenido d-flex w-100 align-items-center gap-2 px-2 py-1">
 
-                            <td colspan="4" class="p-0">
-                                <div class="fila-contenido fs-12 fs-sm-8">
-                                    <div class="celda text-truncate" style="width:10px;">
-                                        {{ m.FechaMantenimiento | date:'dd/MM/yyyy' }}
-                                    </div>
+                        <!-- Fecha -->
+                        <div class="celda text-nowrap flex-shrink-0">
+                            {{ m.FechaMantenimiento | date:'dd/MM/yyyy' }}
+                        </div>
 
-                                    <div class="celda text-truncate"
-                                        style="width:10px; word-break: break-word; overflow-wrap: break-word;">
-                                        {{ m.Responsable }}
-                                    </div>
+                        <!-- Responsable (protagonista) -->
+                        <div class="celda flex-fill text-break">
+                            {{ m.Responsable }}
+                        </div>
 
-                                    <div class="celda text-truncate" style="width:10px;">
-                                        Q {{ CalcularMonto(m) | number:'1.2-2' }}
-                                    </div>
+                        <!-- Monto -->
+                        <div class="celda text-nowrap text-end flex-shrink-0">
+                            Q {{ CalcularMonto(m) | number:'1.2-2' }}
+                        </div>
 
-                                    <div class="celda text-truncate" style="width:90px;">
-                                        <span class="badge estado-cancelado" *ngIf="m.Estado===1">
-                                            <i class="bi bi-check-circle-fill me-1"></i> Cancelado
-                                        </span>
-                                        <span class="badge estado-pendiente" *ngIf="m.Estado===2">
-                                            <i class="bi bi-exclamation-circle-fill me-1"></i> Pendiente
-                                        </span>
-                                    </div>
-                                </div>
-                            </td>
+                        <!-- Estado -->
+                        <div class="celda text-nowrap flex-shrink-0">
+                            <span class="badge estado-cancelado" *ngIf="m.Estado===1">
+                                <i class="bi bi-check-circle-fill me-1"></i> Cancelado
+                            </span>
+                            <span class="badge estado-pendiente" *ngIf="m.Estado===2">
+                                <i class="bi bi-exclamation-circle-fill me-1"></i> Pendiente
+                            </span>
+                        </div>
 
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
 
 
 
