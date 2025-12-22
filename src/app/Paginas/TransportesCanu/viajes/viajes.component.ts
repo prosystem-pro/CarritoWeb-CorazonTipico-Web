@@ -5,10 +5,11 @@ import { Router } from '@angular/router';
 
 import { ViajesServicio } from '../../../Servicios/ViajesServicio';
 import { NabarSidebarComponent } from "../nabar-sidebar/nabar-sidebar.component";
+import { FooterTcComponent } from '../footer-tc/footer-tc.component';
 
 @Component({
   selector: 'app-viajes',
-  imports: [CommonModule, FormsModule, NabarSidebarComponent],
+  imports: [CommonModule, FormsModule, NabarSidebarComponent, FooterTcComponent],
   templateUrl: './viajes.component.html',
   styleUrls: ['./viajes.component.css']
 })

@@ -1,10 +1,12 @@
 import { Component } from '@angular/core';
 import { NabarSidebarComponent } from "../nabar-sidebar/nabar-sidebar.component";
 import { Router } from '@angular/router';
+import { FooterTcComponent } from '../footer-tc/footer-tc.component';
+
 
 @Component({
   selector: 'app-inicio-tc',
-  imports: [NabarSidebarComponent],
+  imports: [NabarSidebarComponent, FooterTcComponent],
   templateUrl: './inicio-tc.component.html',
   styleUrl: './inicio-tc.component.css'
 })

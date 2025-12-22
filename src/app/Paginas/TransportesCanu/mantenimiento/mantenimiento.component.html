@@ -1,5 +1,7 @@
 <app-nabar-sidebar></app-nabar-sidebar>
 
+<!-- Contenedor principal -->
+
 <div class="container-fluid mt-3 px-1">
 
     <!-- LISTADO -->
@@ -42,109 +44,103 @@
 
         <!-- BODY -->
         <div class="card-body py-2 px-2 px-md-3">
+
             <!-- FILA 1: BOTÓN NUEVO Y FILTROS -->
-<!-- FILA 1: BOTÓN NUEVO Y FILTROS -->
-<div class="row mb-3">
-    <div class="col-12 col-md-auto d-flex justify-content-center justify-content-md-start mb-2 mb-md-0">
-        <button class="btn btn-success w-100 fs-6 fs-sm-7" style="max-width: 140px;"
-            (click)="MostrarFormularioCreacion()">
-            <i class="bi bi-plus-square-fill me-1 fs-6 fs-sm-7"></i> Nuevo
-        </button>
-    </div>
+            <div class="row mb-3">
+                <div class="col-12 col-md-auto d-flex justify-content-center justify-content-md-start mb-2 mb-md-0">
+                    <button class="btn btn-success w-100 fs-6 fs-sm-7" style="max-width: 140px;"
+                        (click)="MostrarFormularioCreacion()">
+                        <i class="bi bi-plus-square-fill me-1 fs-6 fs-sm-7"></i> Nuevo
+                    </button>
+                </div>
 
-    <div class="col-12 col-md d-flex gap-2 justify-content-start flex-wrap">
-        <select class="form-select form-select-sm" [(ngModel)]="filtroAnio" (change)="Filtrar()"
-            style="max-width: 140px;">
-            <option value="">Año</option>
-            <option *ngFor="let a of anios" [value]="a">{{ a }}</option>
-        </select>
+                <div class="col-12 col-md d-flex gap-2 justify-content-start flex-wrap">
+                    <select class="form-select form-select-sm" [(ngModel)]="filtroAnio" (change)="Filtrar()"
+                        style="max-width: 140px;">
+                        <option value="">Año</option>
+                        <option *ngFor="let a of anios" [value]="a">{{ a }}</option>
+                    </select>
 
-        <select class="form-select form-select-sm" [(ngModel)]="filtroMes" (change)="Filtrar()"
-            style="max-width: 140px;">
-            <option value="">Mes</option>
-            <option *ngFor="let m of meses" [value]="m.value">{{ m.name }}</option>
-        </select>
-    </div>
-</div>
+                    <select class="form-select form-select-sm" [(ngModel)]="filtroMes" (change)="Filtrar()"
+                        style="max-width: 140px;">
+                        <option value="">Mes</option>
+                        <option *ngFor="let m of meses" [value]="m.value">{{ m.name }}</option>
+                    </select>
+                </div>
+            </div>
 
-<!-- TABLA -->
-<div class="table-responsive">
-    <table class="table table-sm mb-0 tabla-limpiada">
-        <thead>
-            <tr>
-                <!-- Fecha -->
-                <th class="fs-6 fs-sm-8 text-nowrap"
-                    (click)="OrdenarPor('FechaMantenimiento')">
-                    Fecha
-                    <i *ngIf="ColumnaOrden === 'FechaMantenimiento'" class="bi"
-                       [ngClass]="OrdenAscendente ? 'bi-caret-up-fill' : 'bi-caret-down-fill'"></i>
-                </th>
+            <!-- TABLA -->
+            <div class="table-responsive">
+                <table class="table table-sm mb-0 tabla-limpiada">
+                    <thead>
+                        <tr>
+                            <!-- Fecha -->
+                            <th class="fs-6 fs-sm-8 text-nowrap" (click)="OrdenarPor('FechaMantenimiento')">
+                                Fecha
+                                <i *ngIf="ColumnaOrden === 'FechaMantenimiento'" class="bi"
+                                    [ngClass]="OrdenAscendente ? 'bi-caret-up-fill' : 'bi-caret-down-fill'"></i>
+                            </th>
 
-                <!-- Responsable -->
-                <th class="fs-6 fs-sm-8">
-                    Responsable
-                </th>
+                            <!-- Responsable -->
+                            <th class="fs-6 fs-sm-8">
+                                Responsable
+                            </th>
 
-                <!-- Monto -->
-                <th class="fs-6 fs-sm-8 text-nowrap text-end">
-                    Monto
-                </th>
+                            <!-- Monto -->
+                            <th class="fs-6 fs-sm-8 text-nowrap text-end">
+                                Monto
+                            </th>
 
-                <!-- Estatus -->
-                <th class="fs-6 fs-sm-8 text-nowrap">
-                    Estatus
-                </th>
-            </tr>
-        </thead>
+                            <!-- Estatus -->
+                            <th class="fs-6 fs-sm-8 text-nowrap">
+                                Estatus
+                            </th>
+                        </tr>
+                    </thead>
 
-        <tbody>
-            <tr *ngFor="let m of mantenimientosFiltrados"
-                class="fila-deslizable"
-                [attr.data-id]="m.CodigoMantenimiento"
-                (dblclick)="Editar(m)"
-                (mousedown)="IniciarArrastre($event, m)"
-                (mousemove)="DuranteArrastre($event)"
-                (mouseup)="FinalizarArrastre()"
-                (mouseleave)="FinalizarArrastre()"
-                (touchstart)="IniciarArrastre($event, m)"
-                (touchmove)="DuranteArrastre($event)"
-                (touchend)="FinalizarArrastre()">
+                    <tbody>
+                        <tr *ngFor="let m of mantenimientosFiltrados" class="fila-deslizable"
+                            [attr.data-id]="m.CodigoMantenimiento" (dblclick)="Editar(m)"
+                            (mousedown)="IniciarArrastre($event, m)" (mousemove)="DuranteArrastre($event)"
+                            (mouseup)="FinalizarArrastre()" (mouseleave)="FinalizarArrastre()"
+                            (touchstart)="IniciarArrastre($event, m)" (touchmove)="DuranteArrastre($event)"
+                            (touchend)="FinalizarArrastre()">
 
-                <td colspan="4" class="p-0">
-                    <!-- 👇 MISMA LÓGICA QUE VIAJES -->
-                    <div class="fila-contenido d-flex w-100 align-items-center gap-2 px-2 py-1">
+                            <td colspan="4" class="p-0">
+                                <!-- 👇 MISMA LÓGICA QUE VIAJES -->
+                                <div class="fila-contenido d-flex w-100 align-items-center gap-2 px-2 py-1">
 
-                        <!-- Fecha -->
-                        <div class="celda text-nowrap flex-shrink-0">
-                            {{ m.FechaMantenimiento | date:'dd/MM/yyyy' }}
-                        </div>
+                                    <!-- Fecha -->
+                                    <div class="celda text-nowrap flex-shrink-0">
+                                        {{ m.FechaMantenimiento | date:'dd/MM/yyyy' }}
+                                    </div>
 
-                        <!-- Responsable (protagonista) -->
-                        <div class="celda flex-fill text-break">
-                            {{ m.Responsable }}
-                        </div>
+                                    <!-- Responsable (protagonista) -->
+                                    <div class="celda flex-fill text-break">
+                                        {{ m.Responsable }}
+                                    </div>
 
-                        <!-- Monto -->
-                        <div class="celda text-nowrap text-end flex-shrink-0">
-                            Q {{ CalcularMonto(m) | number:'1.2-2' }}
-                        </div>
+                                    <!-- Monto -->
+                                    <div class="celda text-nowrap text-end flex-shrink-0">
+                                        Q {{ CalcularMonto(m) | number:'1.2-2' }}
+                                    </div>
 
-                        <!-- Estado -->
-                        <div class="celda text-nowrap flex-shrink-0">
-                            <span class="badge estado-cancelado" *ngIf="m.Estado===1">
-                                <i class="bi bi-check-circle-fill me-1"></i> Cancelado
-                            </span>
-                            <span class="badge estado-pendiente" *ngIf="m.Estado===2">
-                                <i class="bi bi-exclamation-circle-fill me-1"></i> Pendiente
-                            </span>
-                        </div>
+                                    <!-- Estado -->
+                                    <div class="celda text-nowrap flex-shrink-0">
+                                        <span class="badge estado-cancelado" *ngIf="m.Estado===1">
+                                            <i class="bi bi-check-circle-fill me-1"></i> Cancelado
+                                        </span>
+                                        <span class="badge estado-pendiente" *ngIf="m.Estado===2">
+                                            <i class="bi bi-exclamation-circle-fill me-1"></i> Pendiente
+                                        </span>
+                                    </div>
 
-                    </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-</div>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
 
 
 
@@ -158,22 +154,42 @@
         <div class="card shadow-sm w-100" style="max-width: 99%; border-radius: 12px;">
 
             <!-- HEADER DEL CARD -->
-            <div class="card-header bg-dark text-white position-relative py-3"
-                style="border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.25);">
-                <div class="d-flex justify-content-center align-items-center gap-2">
-                    <i class="bi bi-tools fs-3 text-white"></i>
-                    <h5 class="mb-0 fw-semibold">Datos de mantenimiento</h5>
-                </div>
+            <div class="card-header text-white py-3" style="background-color: #000000;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.25);">
 
-                <!-- BOTÓN CERRAR -->
-                <button type="button" class="position-absolute top-50 end-0 translate-middle-y me-3 p-2"
-                    style="background-color: white; border: none; border-radius: 8px;" (click)="CancelarFormulario()">
-                    <div class="rounded-circle d-flex align-items-center justify-content-center"
-                        style="width: 28px; height: 28px; background-color: white; border: 2px solid black;">
-                        <span style="color: black; font-weight: bold; font-size: 0.9rem;">✕</span>
+                <div class="row align-items-center">
+
+                    <!-- Columna icono -->
+                    <div class="col-auto">
+                        <i class="bi bi-tools fs-3 fs-sm-4 text-white"></i>
                     </div>
-                </button>
+
+                    <!-- Columna título -->
+                    <div class="col text-center">
+                        <h5 class="mb-0 fw-semibold fs-5 fs-sm-6"
+                            style="word-break: break-word; overflow-wrap: break-word;">
+                            Datos de mantenimiento
+                        </h5>
+                    </div>
+
+                    <!-- Columna botón cerrar -->
+                    <div class="col-auto">
+                        <button type="button" class="btn p-2" style="background-color:white;
+                           border-radius:8px;
+                           border:2px solid black;" (click)="CancelarFormulario()">
+
+                            <div class="rounded-circle d-flex align-items-center justify-content-center" style="width:28px;
+                            height:28px;
+                            background-color:white;">
+                                ✕
+                            </div>
+                        </button>
+                    </div>
+
+                </div>
             </div>
+
 
             <!-- BODY -->
             <div class="card-body py-3 px-3">
@@ -280,3 +296,6 @@
 
     </div>
 </div>
+
+ <app-footer-tc></app-footer-tc>
+

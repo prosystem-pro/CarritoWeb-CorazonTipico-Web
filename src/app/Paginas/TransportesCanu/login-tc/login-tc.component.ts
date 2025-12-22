@@ -3,10 +3,11 @@ import { LoginServicio } from '../../../Servicios/LoginServicio';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { FooterTcComponent } from "../footer-tc/footer-tc.component";
 
 @Component({
   selector: 'app-login-tc',
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, FooterTcComponent],
   templateUrl: './login-tc.component.html',
   styleUrl: './login-tc.component.css'
 })

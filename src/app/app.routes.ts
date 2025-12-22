@@ -22,6 +22,7 @@ import { InicioTCComponent } from './Paginas/TransportesCanu/inicio-tc/inicio-tc
 import { MantenimientoComponent } from './Paginas/TransportesCanu/mantenimiento/mantenimiento.component';
 import { LoginTCComponent } from './Paginas/TransportesCanu/login-tc/login-tc.component';
 import { ReportesComponent } from './Paginas/TransportesCanu/reportes/reportes.component';
+import { FooterTcComponent } from './Paginas/TransportesCanu/footer-tc/footer-tc.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/nosotros', pathMatch: 'full' },
@@ -50,6 +51,7 @@ export const routes: Routes = [
   { path: 'mantenimiento', component: MantenimientoComponent, canActivate: [AutorizacionRuta] },
   { path: 'reportes', component: ReportesComponent, canActivate: [AutorizacionRuta] },
   { path: 'logintc', component: LoginTCComponent },
+  { path: 'footertc', component: FooterTcComponent },
 
 
   { path: '**', redirectTo: 'nosotros' },

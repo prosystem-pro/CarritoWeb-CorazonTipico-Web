@@ -164,23 +164,48 @@
     <div *ngIf="modoCreacion || modoEdicion" class="container-fluid mt-3 px-1">
         <div class="card shadow-sm w-100" style="max-width: 99%; border-radius: 12px;">
 
-            <!-- HEADER DEL CARD -->
-            <div class="card-header bg-dark text-white position-relative py-3"
-                style="border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.25);">
-                <div class="d-flex justify-content-center align-items-center gap-2">
-                    <i class="bi bi-truck fs-3 text-white"></i>
-                    <h5 class="mb-0 fw-semibold">Datos del viaje</h5>
-                </div>
+<!-- HEADER DEL CARD -->
+<div class="card-header text-white py-3"
+     style="background-color: #000000;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.25);">
 
-                <!-- BOTÓN CERRAR -->
-                <button type="button" class="position-absolute top-50 end-0 translate-middle-y me-3 p-2"
-                    style="background-color: white; border: none; border-radius: 8px;" (click)="CancelarFormulario()">
-                    <div class="rounded-circle d-flex align-items-center justify-content-center"
-                        style="width: 28px; height: 28px; background-color: white; border: 2px solid black;">
-                        <span style="color: black; font-weight: bold; font-size: 0.9rem;">✕</span>
-                    </div>
-                </button>
-            </div>
+    <div class="row align-items-center">
+
+        <!-- Columna icono -->
+        <div class="col-auto">
+            <i class="bi bi-truck fs-3 fs-sm-4 text-white"></i>
+        </div>
+
+        <!-- Columna título -->
+        <div class="col text-center">
+            <h5 class="mb-0 fw-semibold fs-5 fs-sm-6"
+                style="word-break: break-word; overflow-wrap: break-word;">
+                Datos del viaje
+            </h5>
+        </div>
+
+        <!-- Columna botón cerrar -->
+        <div class="col-auto">
+            <button type="button"
+                    class="btn p-2"
+                    style="background-color:white;
+                           border-radius:8px;
+                           border:2px solid black;"
+                    (click)="CancelarFormulario()">
+
+                <div class="rounded-circle d-flex align-items-center justify-content-center"
+                     style="width:28px;
+                            height:28px;
+                            background-color:white;">
+                    ✕
+                </div>
+            </button>
+        </div>
+
+    </div>
+</div>
+
 
             <!-- BODY -->
             <div class="card-body py-3 px-3">
@@ -300,3 +325,5 @@
         </div>
     </div>
 </div>
+
+ <app-footer-tc></app-footer-tc>

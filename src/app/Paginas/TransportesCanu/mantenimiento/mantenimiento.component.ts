@@ -5,10 +5,11 @@ import { Router } from '@angular/router';
 
 import { MantenimientoServicio } from '../../../Servicios/MantenimientoServicio';
 import { NabarSidebarComponent } from "../nabar-sidebar/nabar-sidebar.component";
+import { FooterTcComponent } from '../footer-tc/footer-tc.component';
 
 @Component({
   selector: 'app-mantenimiento',
-  imports: [CommonModule, FormsModule, NabarSidebarComponent],
+  imports: [CommonModule, FormsModule, NabarSidebarComponent, FooterTcComponent],
   templateUrl: './mantenimiento.component.html',
   styleUrls: ['./mantenimiento.component.css']
 })
