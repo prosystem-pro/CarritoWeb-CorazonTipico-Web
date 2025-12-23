@@ -4,11 +4,10 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { NabarSidebarComponent } from "../nabar-sidebar/nabar-sidebar.component";
 import { Router } from '@angular/router';
-import { FooterTcComponent } from '../footer-tc/footer-tc.component';
 
 @Component({
   selector: 'app-reportes',
-  imports: [FormsModule, CommonModule, NabarSidebarComponent, FooterTcComponent],
+  imports: [FormsModule, CommonModule, NabarSidebarComponent],
   templateUrl: './reportes.component.html',
   styleUrl: './reportes.component.css'
 })
