@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-
+import { LoginServicio } from '../../../Servicios/LoginServicio';
 import { ViajesServicio } from '../../../Servicios/ViajesServicio';
 import { NabarSidebarComponent } from "../nabar-sidebar/nabar-sidebar.component";
 
@@ -28,6 +28,7 @@ export class ViajesComponent implements OnInit {
   ViajeArrastrado: any = null;
   ElementoFila: HTMLElement | null = null;
   viajeParaEliminar: any = null;
+  codigoUsuario: number | null = null;
 
   /* ======================
      DATOS
@@ -58,21 +59,26 @@ export class ViajesComponent implements OnInit {
     { value: '11', name: 'Noviembre' }, { value: '12', name: 'Diciembre' }
   ];
 
-  constructor(private viajesServicio: ViajesServicio, private router: Router) { }
+  constructor(private viajesServicio: ViajesServicio, private router: Router, private loginServicio: LoginServicio,) { }
 
   ngOnInit(): void {
     const hoy = new Date();
     const anioActual = hoy.getFullYear();
 
-    // Año siguiente + actual + dos anteriores
+    this.codigoUsuario = this.loginServicio.ObtenerCodigoUsuario();
+
+    if (!this.codigoUsuario) {
+      this.router.navigate(['/logintc']);
+      return;
+    }
+
     this.anios = [
-      anioActual + 1, // 2026
-      anioActual,     // 2025
-      anioActual - 1, // 2024
-      anioActual - 2  // 2023
+      anioActual + 1,
+      anioActual,
+      anioActual - 1,
+      anioActual - 2
     ];
 
-    // Valores iniciales
     this.filtroAnio = anioActual;
     this.filtroMes = (hoy.getMonth() + 1).toString().padStart(2, '0');
 
@@ -100,10 +106,12 @@ export class ViajesComponent implements OnInit {
      LISTADO
   ====================== */
   Listado(): void {
+    if (!this.codigoUsuario) return;
+
     this.cargando = true;
-    this.viajesServicio.Listado().subscribe({
+
+    this.viajesServicio.Listado(this.codigoUsuario).subscribe({
       next: resp => {
-        console.log('Viajes', resp)
         this.viajes = resp.data || [];
         this.Filtrar();
         this.cargando = false;
@@ -112,39 +120,40 @@ export class ViajesComponent implements OnInit {
     });
   }
 
-/* ======================
-   FILTROS
-====================== */
-Filtrar() {
 
-  this.viajesFiltrados = this.viajes.filter(v => {
+  /* ======================
+     FILTROS
+  ====================== */
+  Filtrar() {
 
-    if (!v.FechaViaje) return false;
+    this.viajesFiltrados = this.viajes.filter(v => {
 
-    // Asumimos formato YYYY-MM-DD o YYYY-MM-DDTHH:mm:ss
-    const fecha = v.FechaViaje.substring(0, 10);
-    const anio = fecha.substring(0, 4);
-    const mes  = fecha.substring(5, 7);
+      if (!v.FechaViaje) return false;
 
-    // Filtro por año
-    if (this.filtroAnio && anio !== this.filtroAnio.toString()) {
-      return false;
-    }
+      // Asumimos formato YYYY-MM-DD o YYYY-MM-DDTHH:mm:ss
+      const fecha = v.FechaViaje.substring(0, 10);
+      const anio = fecha.substring(0, 4);
+      const mes = fecha.substring(5, 7);
 
-    // Filtro por mes
-    if (this.filtroMes && mes !== this.filtroMes) {
-      return false;
-    }
+      // Filtro por año
+      if (this.filtroAnio && anio !== this.filtroAnio.toString()) {
+        return false;
+      }
 
-    return true;
-  });
-}
+      // Filtro por mes
+      if (this.filtroMes && mes !== this.filtroMes) {
+        return false;
+      }
 
-LimpiarFiltros() {
-  this.filtroAnio = '';
-  this.filtroMes = '';
-  this.viajesFiltrados = [...this.viajes];
-}
+      return true;
+    });
+  }
+
+  LimpiarFiltros() {
+    this.filtroAnio = '';
+    this.filtroMes = '';
+    this.viajesFiltrados = [...this.viajes];
+  }
 
   /* ======================
      CREAR / EDITAR
@@ -155,11 +164,24 @@ LimpiarFiltros() {
   }
 
   Crear() {
-    this.viajesServicio.Crear(this.viajeFormulario).subscribe(() => {
+    const codigoUsuario = this.loginServicio.ObtenerCodigoUsuario();
+
+    if (!codigoUsuario) {
+      console.error('No se pudo obtener el CodigoUsuario');
+      return;
+    }
+
+    const datos = {
+      ...this.viajeFormulario,
+      CodigoUsuario: codigoUsuario
+    };
+
+    this.viajesServicio.Crear(datos).subscribe(() => {
       this.modoCreacion = false;
       this.Listado();
     });
   }
+
 
   Editar(viaje: any) {
     this.viajeFormulario = { ...viaje };

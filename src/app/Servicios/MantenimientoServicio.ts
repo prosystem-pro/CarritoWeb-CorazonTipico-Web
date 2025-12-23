@@ -11,11 +11,14 @@ export class MantenimientoServicio {
 
   private Url = `${Entorno.ApiUrl}mantenimiento`;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
-  Listado(): Observable<any> {
-    return this.http.get(`${this.Url}/listado`);
+  Listado(codigoUsuario: number): Observable<any> {
+    return this.http.get(`${this.Url}/listado`, {
+      params: { CodigoUsuario: codigoUsuario }
+    });
   }
+
 
   Crear(Datos: any): Observable<any> {
     return this.http.post(`${this.Url}/crear`, Datos);
@@ -33,13 +36,4 @@ export class MantenimientoServicio {
     return this.http.delete(`${this.Url}/eliminar/${Codigo}`);
   }
 
-  ObtenerPrimerMantenimiento(): Observable<any | null> {
-    return this.Listado().pipe(
-      map(mantenimientos => (
-        mantenimientos.data && mantenimientos.data.length > 0
-          ? mantenimientos.data[0]
-          : null
-      ))
-    );
-  }
 }

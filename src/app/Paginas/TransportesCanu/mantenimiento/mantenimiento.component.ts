@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
+import { LoginServicio } from '../../../Servicios/LoginServicio';
 
 import { MantenimientoServicio } from '../../../Servicios/MantenimientoServicio';
 import { NabarSidebarComponent } from "../nabar-sidebar/nabar-sidebar.component";
@@ -14,6 +15,7 @@ import { NabarSidebarComponent } from "../nabar-sidebar/nabar-sidebar.component"
   styleUrls: ['./mantenimiento.component.css']
 })
 export class MantenimientoComponent implements OnInit {
+  codigoUsuario: number | null = null;
 
   /* ======================
      VARIABLES DE ORDEN Y ARRASTRE
@@ -57,29 +59,36 @@ export class MantenimientoComponent implements OnInit {
 
   constructor(
     private mantenimientoServicio: MantenimientoServicio,
-    private router: Router
-  ) {}
+    private router: Router,
+    private loginServicio: LoginServicio
+  ) { }
 
-ngOnInit(): void {
-  const hoy = new Date();
-  const anioActual = hoy.getFullYear();
-  const mesActual = (hoy.getMonth() + 1).toString().padStart(2, '0'); // 01-12
+  ngOnInit(): void {
+    const hoy = new Date();
+    const anioActual = hoy.getFullYear();
+    const mesActual = (hoy.getMonth() + 1).toString().padStart(2, '0');
 
-  // Año siguiente + actual + dos anteriores
-  this.anios = [
-    anioActual + 1,
-    anioActual,
-    anioActual - 1,
-    anioActual - 2
-  ];
+    // 🔐 OBTENER CODIGOUSUARIO
+    this.codigoUsuario = this.loginServicio.ObtenerCodigoUsuario();
 
-  // Selección inicial de filtros: año y mes actual
-  this.filtroAnio = anioActual.toString();
-  this.filtroMes = mesActual;
+    if (!this.codigoUsuario) {
+      this.router.navigate(['/logintc']);
+      return;
+    }
 
-  // Traer listado y aplicar filtros
-  this.Listado();
-}
+    this.anios = [
+      anioActual + 1,
+      anioActual,
+      anioActual - 1,
+      anioActual - 2
+    ];
+
+    this.filtroAnio = anioActual.toString();
+    this.filtroMes = mesActual;
+
+    // 👇 ya tenemos el codigo
+    this.Listado();
+  }
 
 
   /* ======================
@@ -102,8 +111,10 @@ ngOnInit(): void {
      LISTADO
   ====================== */
   Listado(): void {
+    if (!this.codigoUsuario) return;
+
     this.cargando = true;
-    this.mantenimientoServicio.Listado().subscribe({
+    this.mantenimientoServicio.Listado(this.codigoUsuario).subscribe({
       next: resp => {
         this.mantenimientos = resp.data || [];
         this.mantenimientosFiltrados = [...this.mantenimientos];
@@ -113,6 +124,7 @@ ngOnInit(): void {
     });
   }
 
+
   /* ======================
      FILTROS
   ====================== */
@@ -120,7 +132,7 @@ ngOnInit(): void {
     this.mantenimientosFiltrados = this.mantenimientos.filter(m => {
       const f = new Date(m.FechaMantenimiento);
       return (!this.filtroAnio || f.getFullYear().toString() === this.filtroAnio) &&
-             (!this.filtroMes || (f.getMonth() + 1).toString().padStart(2, '0') === this.filtroMes);
+        (!this.filtroMes || (f.getMonth() + 1).toString().padStart(2, '0') === this.filtroMes);
     });
   }
 
@@ -139,11 +151,24 @@ ngOnInit(): void {
   }
 
   Crear() {
-    this.mantenimientoServicio.Crear(this.mantenimientoFormulario).subscribe(() => {
+    const codigoUsuario = this.loginServicio.ObtenerCodigoUsuario();
+
+    if (!codigoUsuario) {
+      console.error('No se pudo obtener el CodigoUsuario');
+      return;
+    }
+
+    const datos = {
+      ...this.mantenimientoFormulario,
+      CodigoUsuario: codigoUsuario
+    };
+
+    this.mantenimientoServicio.Crear(datos).subscribe(() => {
       this.modoCreacion = false;
       this.Listado();
     });
   }
+
 
   /* ======================
      EDITAR

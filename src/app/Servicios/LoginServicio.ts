@@ -21,7 +21,7 @@ export class LoginServicio {
         next: (Respuesta: any) => {
           if (Respuesta) {
             this.GuardarToken('authToken', Respuesta.data?.Token);
-              this.GuardarUsuario(Respuesta.data?.usuario);
+            this.GuardarUsuario(Respuesta.data?.usuario);
           }
           observer.next(Respuesta);
           observer.complete();
@@ -75,6 +75,17 @@ export class LoginServicio {
 
   EliminarUsuario(): void {
     localStorage.removeItem('authUsuario');
+  }
+  ObtenerCodigoUsuario(): number | null {
+    const token = this.ObtenerToken();
+    if (!token) return null;
+
+    try {
+      const payload = JSON.parse(atob(token.split('.')[1]));
+      return payload.CodigoUsuario ?? null;
+    } catch (error) {
+      return null;
+    }
   }
 
 }

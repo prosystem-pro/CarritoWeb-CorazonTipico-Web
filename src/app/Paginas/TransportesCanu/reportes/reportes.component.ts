@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { NabarSidebarComponent } from "../nabar-sidebar/nabar-sidebar.component";
 import { Router } from '@angular/router';
+import { LoginServicio } from '../../../Servicios/LoginServicio';
 
 @Component({
   selector: 'app-reportes',
@@ -13,6 +14,7 @@ import { Router } from '@angular/router';
 })
 export class ReportesComponent implements OnInit {
 
+  codigoUsuario: number | null = null;
   reporte: any = null;
 
   filtroAnio: number | '' = '';
@@ -38,29 +40,37 @@ export class ReportesComponent implements OnInit {
 
   constructor(
     private viajesServicio: ViajesServicio,
-    private router: Router
+    private router: Router,
+    private loginServicio: LoginServicio
   ) { }
 
-ngOnInit(): void {
-  const hoy = new Date();
-  const anioActual = hoy.getFullYear();
-  const mesActual = (hoy.getMonth() + 1).toString().padStart(2, '0');
+  ngOnInit(): void {
+    const hoy = new Date();
+    const anioActual = hoy.getFullYear();
+    const mesActual = (hoy.getMonth() + 1).toString().padStart(2, '0');
 
-  // Año siguiente + actual + dos anteriores
-  this.anios = [
-    anioActual + 1, // 2026
-    anioActual,     // 2025
-    anioActual - 1, // 2024
-    anioActual - 2  // 2023
-  ];
+    // 🔐 OBTENER CODIGO USUARIO
+    this.codigoUsuario = this.loginServicio.ObtenerCodigoUsuario();
 
-  // Valores por defecto
-  this.filtroAnio = anioActual;
-  this.filtroMes = mesActual;
+    if (!this.codigoUsuario) {
+      this.router.navigate(['/logintc']);
+      return;
+    }
 
-  this.actualizarNombreMes();
-  this.cargarReporte();
-}
+    this.anios = [
+      anioActual + 1,
+      anioActual,
+      anioActual - 1,
+      anioActual - 2
+    ];
+
+    this.filtroAnio = anioActual;
+    this.filtroMes = mesActual;
+
+    this.actualizarNombreMes();
+    this.cargarReporte();
+  }
+
 
   GenerarLinea(data: number[]): string {
     const max = Math.max(...data, 1);
@@ -85,10 +95,16 @@ ngOnInit(): void {
   }
 
   cargarReporte(): void {
+    if (!this.codigoUsuario) return;
+
     this.reporte = null;
 
     this.viajesServicio
-      .ObtenerReporteMensual(this.filtroAnio as number, Number(this.filtroMes))
+      .ObtenerReporteMensual(
+        this.filtroAnio as number,
+        Number(this.filtroMes),
+        this.codigoUsuario
+      )
       .subscribe({
         next: resp => {
           this.reporte = resp.data;

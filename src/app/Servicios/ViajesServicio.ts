@@ -11,11 +11,16 @@ export class ViajesServicio {
 
   private Url = `${Entorno.ApiUrl}viajes`;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
-  Listado(): Observable<any> {
-    return this.http.get(`${this.Url}/listado`);
+  Listado(codigoUsuario: number): Observable<any> {
+    return this.http.get(`${this.Url}/listado`, {
+      params: {
+        CodigoUsuario: codigoUsuario
+      }
+    });
   }
+
 
   Crear(Datos: any): Observable<any> {
     return this.http.post(`${this.Url}/crear`, Datos);
@@ -33,13 +38,17 @@ export class ViajesServicio {
     return this.http.delete(`${this.Url}/eliminar/${Codigo}`);
   }
 
-  ObtenerPrimerViaje(): Observable<any | null> {
-    return this.Listado().pipe(
-      map(viajes => (viajes.data && viajes.data.length > 0 ? viajes.data[0] : null))
-    );
+
+  ObtenerReporteMensual(
+    anio: number,
+    mes: number,
+    codigoUsuario: number
+  ): Observable<any> {
+    return this.http.get(`${this.Url}/reporte/${anio}/${mes}`, {
+      params: {
+        CodigoUsuario: codigoUsuario
+      }
+    });
   }
 
-  ObtenerReporteMensual(anio: number, mes: number): Observable<any> {
-    return this.http.get(`${this.Url}/reporte/${anio}/${mes}`);
-  }
 }
