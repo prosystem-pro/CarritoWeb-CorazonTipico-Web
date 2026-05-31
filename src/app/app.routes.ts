@@ -41,7 +41,8 @@ export const routes: Routes = [
   { path: 'header-reporte', component: HeaderReporteComponent, canActivate: [AutorizacionRuta] },
   { path: 'reporte-vista', component: ReporteVistaComponent, canActivate: [AutorizacionRuta] },
   { path: 'reporte-red-social', component: ReporteRedSocialComponent, canActivate: [AutorizacionRuta] },
-  { path: 'reporte-tiempo-pagina', component: ReporteTiempoPaginaComponent, canActivate: [AutorizacionRuta] },
+  // Reporte de Tiempo en Página DESACTIVADO (se mantiene el componente, pero la ruta no se expone)
+  // { path: 'reporte-tiempo-pagina', component: ReporteTiempoPaginaComponent, canActivate: [AutorizacionRuta] },
   { path: 'pago', component: PagoComponent, canActivate: [AutorizacionRuta] },
   //Transportes Canu
   { path: 'navbarsidebar', component: NabarSidebarComponent, canActivate: [AutorizacionRuta] },

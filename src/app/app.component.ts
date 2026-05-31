@@ -52,39 +52,41 @@ export class AppComponent implements OnInit {
     }
 
 
-    setTimeout(() => {
-      const datos = {
-        TiempoPromedio: '00:00:00',
-        Navegador: this.ObtenerNavegador()
-      };
-      this.ReporteTiempoPaginaServicio.Crear(datos).subscribe({
-        next: (respuesta) => {
-          this.codigoReporteTiempoPagina = respuesta.data.CodigoReporteTiempoPagina;
-          this.iniciarActualizacionTiempo();
-        },
-        error: (err) => console.error('Error creando reporte inicial:', err)
-      });
-    }, 5000);
+    // Reporte de Tiempo en Página DESACTIVADO: no se crea ni actualiza el registro en el backend.
+    // setTimeout(() => {
+    //   const datos = {
+    //     TiempoPromedio: '00:00:00',
+    //     Navegador: this.ObtenerNavegador()
+    //   };
+    //   this.ReporteTiempoPaginaServicio.Crear(datos).subscribe({
+    //     next: (respuesta) => {
+    //       this.codigoReporteTiempoPagina = respuesta.data.CodigoReporteTiempoPagina;
+    //       this.iniciarActualizacionTiempo();
+    //     },
+    //     error: (err) => console.error('Error creando reporte inicial:', err)
+    //   });
+    // }, 5000);
   }
 
   iniciarActualizacionTiempo(): void {
-    this.intervaloActualizacion = setInterval(() => {
-      if (!this.codigoReporteTiempoPagina) return;
-
-      const tiempoMs = Date.now() - this.horaEntrada;
-      const tiempoFormateado = this.formatearTiempo(tiempoMs);
-
-      const datos = {
-        CodigoReporteTiempoPagina: this.codigoReporteTiempoPagina,
-        TiempoPromedio: tiempoFormateado,
-        Navegador: this.ObtenerNavegador()
-      };
-
-      this.ReporteTiempoPaginaServicio.Editar(datos).subscribe({
-        next: () => { },
-        error: () => { }
-      });
-    }, 10000);
+    // Reporte de Tiempo en Página DESACTIVADO: no se envían actualizaciones periódicas.
+    // this.intervaloActualizacion = setInterval(() => {
+    //   if (!this.codigoReporteTiempoPagina) return;
+    //
+    //   const tiempoMs = Date.now() - this.horaEntrada;
+    //   const tiempoFormateado = this.formatearTiempo(tiempoMs);
+    //
+    //   const datos = {
+    //     CodigoReporteTiempoPagina: this.codigoReporteTiempoPagina,
+    //     TiempoPromedio: tiempoFormateado,
+    //     Navegador: this.ObtenerNavegador()
+    //   };
+    //
+    //   this.ReporteTiempoPaginaServicio.Editar(datos).subscribe({
+    //     next: () => { },
+    //     error: () => { }
+    //   });
+    // }, 10000);
   }
 
 
@@ -137,23 +139,23 @@ export class AppComponent implements OnInit {
   }
   registrarSalida(): void {
     clearInterval(this.intervaloActualizacion);
-    if (this.codigoReporteTiempoPagina == null) return;
-
-    const tiempoFinalMs = Date.now() - this.horaEntrada;
-    const tiempoFormateado = this.formatearTiempo(tiempoFinalMs);
-
-    const datos = {
-      CodigoReporteTiempoPagina: this.codigoReporteTiempoPagina,
-      TiempoPromedio: tiempoFormateado,
-      Navegador: this.ObtenerNavegador()
-    };
-
-    const blob = new Blob([JSON.stringify(datos)], { type: 'application/json' });
-    const exito = navigator.sendBeacon(
-      Entorno.ApiUrl + 'reportetiempopagina/editar',
-      blob
-    );
-
+    // Reporte de Tiempo en Página DESACTIVADO: no se envía el registro de salida al backend.
+    // if (this.codigoReporteTiempoPagina == null) return;
+    //
+    // const tiempoFinalMs = Date.now() - this.horaEntrada;
+    // const tiempoFormateado = this.formatearTiempo(tiempoFinalMs);
+    //
+    // const datos = {
+    //   CodigoReporteTiempoPagina: this.codigoReporteTiempoPagina,
+    //   TiempoPromedio: tiempoFormateado,
+    //   Navegador: this.ObtenerNavegador()
+    // };
+    //
+    // const blob = new Blob([JSON.stringify(datos)], { type: 'application/json' });
+    // const exito = navigator.sendBeacon(
+    //   Entorno.ApiUrl + 'reportetiempopagina/editar',
+    //   blob
+    // );
   }
 
   formatearTiempo(ms: number): string {
